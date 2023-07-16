@@ -115,6 +115,13 @@
               </a>
 
             </li>
+            <li class="nav-item">
+              <a href="<?php echo site_url('dashboard') ?>" class="nav-link">
+                <i class="bi bi-briefcase-fill"></i>
+                <p>Dashboard</p>
+              </a>
+
+            </li>
             <?php if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '5') { ?>
               <li class="nav-item">
                 <a href="<?php echo site_url('timesheet') ?>" class="nav-link">

@@ -14,7 +14,7 @@
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="small-box bg-info">
 						<div class="inner">
-							<h3><?php echo $karyawan ?></h3>
+							<h3><?php echo $karyawan ?> </h3>
 							<p>Jumlah Karyawan</p>
 						</div>
 						<div class="icon">
@@ -136,41 +136,47 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-6 col-md-6">
-				<div class=" chart-container small-chart">
+				<div class="chart-container small-chart">
 					<canvas id="genderChart"></canvas>
 				</div>
 			</div>
 			<div class="col-lg-6 col-md-6">
-				<div style="width: 700px; height: 500px">
-					<div class=" chart-container small-chart">
-						<canvas id="barChart" style="width: 100%; height: 100%;"></canvas>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<hr>
-	<div class="container-fluid">
-		<div class="row justify-content-center">
-			<div class="col-lg-6 col-md-6">
-				<div class=" chart-container text-center">
+				<div class="chart-container small-chart">
 					<canvas id="doughnutChart"></canvas>
 				</div>
 			</div>
 		</div>
 	</div>
-
+	<hr>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-lg-6 col-md-6">
+				<div class="chart-container small-chart">
+					<canvas id="barChart" style="width: 100%; height: 100%;"></canvas>
+				</div>
+			</div>
+			<div class="col-lg-6 col-md-6">
+				<div class="chart-container small-chart">
+					<canvas id="lineChart" style="width: 100%; height: 100%;"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
 	<hr>
 	<style>
 		.small-chart {
 			width: 570px;
 			height: 570px;
+			margin-left: 130px;
 		}
 
 		.text-center {
 			width: 570px;
 			height: 570px;
+		}
+
+		.margin-left {
+			margin-left: 130px;
 		}
 	</style>
 
@@ -211,7 +217,6 @@
 				}
 			}
 		};
-
 		var barCtx = document.getElementById('barChart').getContext('2d');
 		var chart = new Chart(barCtx, barConfig);
 
@@ -360,7 +365,48 @@
 			}
 		});
 	</script>
+	<script>
+		// Data Array dari controller
+		var data = <?php echo json_encode($hm_bulan); ?>;
 
+		// Konversi data menjadi format yang dibutuhkan oleh chart
+		var chartData = [];
+		data.forEach(function(item) {
+			chartData.push({
+				x: new Date(item.bulan),
+				y: item.total_selisih
+			});
+		});
+
+		// Membuat Line Chart Timeseries
+		var ctx = document.getElementById('lineChart').getContext('2d');
+		new Chart(ctx, {
+			type: 'line',
+			data: {
+				datasets: [{
+					data: chartData,
+					label: 'Timeseries Data',
+					borderColor: 'rgba(75, 192, 192, 1)',
+					backgroundColor: 'rgba(75, 192, 192, 0.2)',
+					fill: true
+				}]
+			},
+			options: {
+				scales: {
+					x: {
+						type: 'time',
+						time: {
+							unit: 'month'
+						}
+					},
+					y: {
+						type: 'logarithmic', // Mengatur skala menjadi logarithmic
+						beginAtZero: true
+					}
+				}
+			}
+		});
+	</script>
 
 </body>
 

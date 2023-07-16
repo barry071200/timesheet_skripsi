@@ -40,6 +40,12 @@ class Dashboard extends CI_Controller
     $data['chartData'] = $query->result_array();
     $jenis = $this->db->query("SELECT perusahaan, COUNT(*) as jumlah_unit from unit group by perusahaan");
     $data['jenis'] = $jenis->result_array();
+    $hm_bulan = $this->db->query("SELECT DATE_FORMAT(tanggal, '%M') AS bulan, SUM(hm_akhir - hm_awal) AS total_selisih
+                                  FROM timesheet
+                                  WHERE YEAR(tanggal) = YEAR(CURDATE())
+                                  GROUP BY bulan");
+    $data['hm_bulan'] = $hm_bulan->result_array();
+
 
     $kosong = $this->db->query("SELECT COUNT(*) AS total
                           FROM timesheet
