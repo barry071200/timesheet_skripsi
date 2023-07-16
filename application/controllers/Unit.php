@@ -33,9 +33,7 @@ class Unit extends CI_Controller
   {
     if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '4' or $this->session->userdata('role') == '5' or $this->session->userdata('role') == '3') {
       $this->load->model('Unit_model');
-      $this->load->model('Jenis_model');
       $data['unit'] = $this->Unit_model->ambil()->result_array();
-      $data['jenis'] = $this->Jenis_model->getJenis();
       $data['layout'] = 'unit/index';
       $data['judul'] = 'Data Unit';
       $this->load->view('template', $data);

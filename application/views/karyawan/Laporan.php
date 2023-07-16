@@ -147,11 +147,14 @@
             var jamFields = table.querySelectorAll('.jam-kerja');
             for (var i = 0; i < jamFields.length; i++) {
                 var jamText = jamFields[i].textContent;
-                var jam = parseInt(jamText);
+                var jam = parseFloat(jamText);
                 if (!isNaN(jam)) {
                     totalJam += jam;
                 }
             }
+
+            var formattedTotalJam = totalJam.toFixed(2);
+
             var tableData = table.outerHTML;
             var totalsewa = 0;
             var totalFields = table.querySelectorAll('.total-Premi');
@@ -171,7 +174,7 @@
                 '<h1 class="text-right">Timesheet</h1>' +
                 '</div>' +
                 '<table>' + tableData + '</table>' +
-                '<p>Total Jam Kerja: ' + totalJam + ' jam</p>' + '<p>Total Biaya Sewa: Rp ' + totalsewa.toLocaleString() + '</p>';
+                '<p>Total Jam Kerja: ' + formattedTotalJam + ' jam</p>' + '<p>Total Biaya Sewa: Rp ' + totalsewa.toLocaleString() + '</p>';
             document.body.innerHTML = printPreview.innerHTML;
             window.print();
             location.reload();

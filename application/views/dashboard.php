@@ -136,45 +136,53 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-lg-6 col-md-6">
-				<div class="chart-container small-chart">
+				<div class=" chart-container small-chart">
 					<canvas id="genderChart"></canvas>
 				</div>
 			</div>
 			<div class="col-lg-6 col-md-6">
 				<div style="width: 700px; height: 500px">
-					<canvas id="barChart" style="width: 100%; height: 100%;"></canvas>
+					<div class=" chart-container small-chart">
+						<canvas id="barChart" style="width: 100%; height: 100%;"></canvas>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<hr>
+	<div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-lg-6 col-md-6">
+				<div class=" chart-container text-center">
+					<canvas id="doughnutChart"></canvas>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<hr>
 	<style>
 		.small-chart {
 			width: 570px;
 			height: 570px;
 		}
+
+		.text-center {
+			width: 570px;
+			height: 570px;
+		}
 	</style>
 
 	<script>
-		// Membuat chart berdasarkan gender
-
-		// Mendapatkan data dari PHP dan mengubahnya menjadi array JavaScript
 		var chartData = <?php echo json_encode($chartData); ?>;
-
-		// Membuat array untuk label dan nilai dari grafik
 		var labels = [];
 		var values = [];
-
-		// Mengisi array label dan nilai dari data
 		for (var i = 0; i < chartData.length; i++) {
 			labels.push(chartData[i].nama_karyawan);
 			values.push(chartData[i].jam);
 		}
-
-		// Menghasilkan array warna yang berbeda untuk setiap balok
 		var colors = generateColors(chartData.length);
-
-		// Membuat bar chart menggunakan Chart.js
 		var barData = {
 			labels: labels,
 			datasets: [{
@@ -182,7 +190,6 @@
 				backgroundColor: colors,
 			}]
 		};
-
 		var barConfig = {
 			type: 'bar',
 			data: barData,
@@ -208,7 +215,6 @@
 		var barCtx = document.getElementById('barChart').getContext('2d');
 		var chart = new Chart(barCtx, barConfig);
 
-		// Fungsi untuk memperbarui chart berdasarkan bulan dan tahun yang dipilih
 		function updateChart() {
 			var selectedMonth = document.getElementById('bulan').value;
 			var selectedYear = document.getElementById('tahun').value;
@@ -225,14 +231,11 @@
 					filteredValues.push(chartData[i].jam);
 				}
 			}
-
-			// Mengupdate chart dengan data yang difilter
 			chart.data.labels = filteredLabels;
 			chart.data.datasets[0].data = filteredValues;
 			chart.update();
 		}
 
-		// Fungsi untuk menghasilkan array warna yang berbeda
 		function generateColors(length) {
 			var colors = [];
 
@@ -296,6 +299,66 @@
 
 		var genderCtx = document.getElementById('genderChart').getContext('2d');
 		new Chart(genderCtx, genderConfig);
+	</script>
+	<script>
+		// Data Array
+		var data = <?php echo json_encode($jenis); ?>;
+
+		// Mengambil data jenis perusahaan dan jumlah unit
+		var jenis = [];
+		var jumlahUnit = [];
+		for (var i = 0; i < data.length; i++) {
+			jenis.push(data[i].perusahaan);
+			jumlahUnit.push(parseInt(data[i].jumlah_unit));
+		}
+
+		// Fungsi untuk menghasilkan warna acak
+		function getRandomColor() {
+			var letters = '0123456789ABCDEF';
+			var color = '#';
+			for (var i = 0; i < 6; i++) {
+				color += letters[Math.floor(Math.random() * 16)];
+			}
+			return color;
+		}
+
+		// Menghasilkan array warna acak
+		var randomColors = [];
+		for (var i = 0; i < jenis.length; i++) {
+			randomColors.push(getRandomColor());
+		}
+
+		// Membuat doughnut chart
+		var ctx = document.getElementById('doughnutChart').getContext('2d');
+		var doughnutChart = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				labels: jenis,
+				datasets: [{
+					data: jumlahUnit,
+					backgroundColor: randomColors,
+					borderWidth: 1
+				}]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false,
+				plugins: {
+					title: {
+						display: true,
+						text: 'Jumlah Unit Kontraktor'
+					}
+				},
+				legend: {
+					position: 'bottom',
+					labels: {
+						fontColor: 'black',
+						fontSize: 12,
+						boxWidth: 10
+					}
+				}
+			}
+		});
 	</script>
 
 

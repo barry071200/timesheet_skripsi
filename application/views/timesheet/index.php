@@ -74,11 +74,13 @@
                 var jamFields = table.querySelectorAll('.jam-kerja');
                 for (var i = 0; i < jamFields.length; i++) {
                     var jamText = jamFields[i].textContent;
-                    var jam = parseInt(jamText);
+                    var jam = parseFloat(jamText);
                     if (!isNaN(jam)) {
                         totalJam += jam;
                     }
                 }
+                var formattedTotalJam = totalJam.toFixed(2);
+
                 var printPreview = document.createElement('div');
                 printPreview.innerHTML = '<style>body { font-size: 12px; }</style>' +
                     '<div class="d-flex justify-content-between">' +
@@ -86,7 +88,7 @@
                     '<h1 class="text-right">Timesheet</h1>' +
                     '</div>' +
                     '<table>' + tableData + '</table>' +
-                    '<p>Total Jam Kerja: ' + totalJam + ' jam</p>';
+                    '<p>Total Jam Kerja: ' + formattedTotalJam + ' jam</p>';
                 document.body.innerHTML = printPreview.innerHTML;
                 window.print();
                 location.reload();
@@ -213,11 +215,10 @@
                             </select>
                             <label for="tanggal">Tanggal </label>
                             <input type="date" required class="form-control" rows="3" id="tanggal" name="tanggal" placeholder="Masukan Tanggal">
-
                             <label for="hm_awal">Hour Meter AWAL</label>
-                            <input type="number" required class="form-control" rows="3" id="hm_awal" name="hm_awal" placeholder="Masukan HM AWAL">
+                            <input type="number" required class="form-control" step="0.01" id="hm_awal" name="hm_awal" placeholder="Masukan HM AWAL">
                             <label for="hm_akhir">Hour Meter AKHIR</label>
-                            <input type="number" required class="form-control" rows="3" id="hm_akhir" name="hm_akhir" placeholder="Masukan HM AKHIR">
+                            <input type="number" required class="form-control" step="0.01" id="hm_akhir" name="hm_akhir" placeholder="Masukan HM AKHIR">
                             <label for="keterangan">Keterangan</label>
                             <input type="text" required class="form-control" id="keterangan" name="keterangan" placeholder="Masukan Keterangan Pekerjaan">
 
@@ -287,11 +288,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="hm_awal">HM AWAL</label>
-                                <input type="number" required class="form-control" id="hm_awal_<?php echo $dt['id_timesheet']; ?>" name="hm_awal" value="<?php echo $dt['hm_awal']; ?>">
+                                <input type="number" required class="form-control" step="0.01" id="hm_awal_<?php echo $dt['id_timesheet']; ?>" name="hm_awal" value="<?php echo $dt['hm_awal']; ?>">
                             </div>
                             <div class="form-group">
                                 <label for="hm_akhir">HM AKHIR</label>
-                                <input type="number" required class="form-control" id="hm_akhir_<?php echo $dt['id_timesheet']; ?>" name="hm_akhir" value="<?php echo $dt['hm_akhir']; ?>">
+                                <input type="number" required class="form-control" step="0.01" id="hm_akhir_<?php echo $dt['id_timesheet']; ?>" name="hm_akhir" value="<?php echo $dt['hm_akhir']; ?>">
                             </div>
                             <div class="form-group">
                                 <label for="keterangan">Keterangan</label>
