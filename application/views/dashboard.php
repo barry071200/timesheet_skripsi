@@ -5,6 +5,7 @@
 	<title>Karyawan Dashboard</title>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-labels"></script>
+
 </head>
 
 <body>
@@ -69,7 +70,7 @@
 						<?php } ?>
 						<?php if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '2' or $this->session->userdata('role') == '5') { ?>
 							<div class="col-lg-3 col-md-6 col-sm-6">
-								<div class="small-box bg-danger">
+								<div class="small-box bg-secondary">
 									<div class="inner">
 										<h3><?php echo $timesheet ?></h3>
 										<p>Jumlah Timesheet</p>
@@ -100,8 +101,8 @@
 									<div class="icon">
 										<i class="bi bi-clock"></i>
 									</div>
-									<?php if ($this->session->userdata('role') != '2') { ?>
-										<a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+									<?php if ($this->session->userdata('role') == '1') { ?>
+										<a href="<?php echo site_url('rangkuman') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
 									<?php } ?>
 								</div>
 							</div>
@@ -365,48 +366,54 @@
 			}
 		});
 	</script>
+
 	<script>
-		// Data Array dari controller
 		var data = <?php echo json_encode($hm_bulan); ?>;
 
-		// Konversi data menjadi format yang dibutuhkan oleh chart
 		var chartData = [];
 		data.forEach(function(item) {
 			chartData.push({
-				x: new Date(item.bulan),
-				y: item.total_selisih
+				x: item.bulan,
+				y: parseFloat(item.total_selisih)
 			});
 		});
 
-		// Membuat Line Chart Timeseries
 		var ctx = document.getElementById('lineChart').getContext('2d');
 		new Chart(ctx, {
 			type: 'line',
 			data: {
+				labels: '',
 				datasets: [{
 					data: chartData,
 					label: 'Timeseries Data',
 					borderColor: 'rgba(75, 192, 192, 1)',
 					backgroundColor: 'rgba(75, 192, 192, 0.2)',
-					fill: true
 				}]
 			},
 			options: {
+				title: {
+					display: true,
+					text: 'Line Chart Example'
+				},
 				scales: {
-					x: {
-						type: 'time',
-						time: {
-							unit: 'month'
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
 						}
-					},
-					y: {
-						type: 'logarithmic', // Mengatur skala menjadi logarithmic
-						beginAtZero: true
-					}
+					}],
+					xAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
 				}
 			}
 		});
 	</script>
+
+
+
+
 
 </body>
 

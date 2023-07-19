@@ -22,7 +22,7 @@
                 <th>HM AKHIR</th>
                 <th>JUMLAH</th>
                 <th>KETERANGAN</th>
-                <th>CEK</th>
+                <th class="action-column">CEK</th>
                 <th>KONFIRMASI</th>
 
 
@@ -34,15 +34,15 @@
             $tValid = "DITOLAK";
             foreach ($timesheet as $dt) : ?>
                 <tr>
-                    <td><?php echo $no++; ?></td>
+                    <td class="action-column"><?php echo $no++; ?></td>
                     <td><?php echo $dt['nama_karyawan']; ?></td>
                     <td><?php echo $dt['nama_unit']; ?></td>
                     <td><?php echo $dt['tanggal']; ?></td>
                     <td><?php echo $dt['hm_awal']; ?></td>
                     <td><?php echo $dt['hm_akhir']; ?></td>
-                    <td><?php echo $dt['hm_akhir'] - $dt['hm_awal']; ?> Jam</td>
+                    <td class="jam-kerja"><?php echo $dt['hm_akhir'] - $dt['hm_awal']; ?> Jam</td>
                     <td><?php echo $dt['keterangan']; ?></td>
-                    <td class="konfirmasi-column">
+                    <td>
                         <?php if ($dt['konfirmasi'] === 'DITERIMA') : ?>
                             <span class="badge bg-green">
                                 <?php echo $dt['konfirmasi']; ?>
@@ -57,7 +57,7 @@
                             </span>
                         <?php endif; ?>
                     </td>
-                    <td>
+                    <td class="action-column">
                         <form method="post" action="<?php echo site_url("supervisor/cek") ?>">
                             <a class="btn btn-success" href="<?php echo site_url("supervisor/cek") . "/" . $dt['id_timesheet'] . "/" . $valid; ?>">Diterima</a>
                             <a class="btn btn-warning" href="<?php echo site_url("supervisor/cek") . "/" . $dt['id_timesheet'] . "/" . $tValid; ?>">Ditolak</a>
@@ -107,22 +107,52 @@
 <script>
     $(document).ready(function() {
         var table = $('#example1').DataTable({
-            "pageLength": 25, // Mengatur jumlah entri per halaman menjadi 25
+            "pageLength": 31,
             "columnDefs": [{
-                "targets": 9, // Kolom "KONFIRMASI" berada pada indeks 9
-                "searchable": false // Mengatur kolom "KONFIRMASI" tidak dapat dicari
+                "targets": 9,
+                "searchable": false
             }]
         });
     });
 </script>
 <script>
     function printData() {
-        window.print();
-    }
-
-    document.addEventListener("keydown", function(event) {
-        if (event.ctrlKey && event.key === "p") {
-            printData(); // Memanggil fungsi cetak data
+        var table = document.getElementById('example1');
+        var actionColumn = table.querySelectorAll(".action-column");
+        for (var i = 0; i < actionColumn.length; i++) {
+            actionColumn[i].style.display = "none";
         }
-    });
+        var actionColumn = table.querySelectorAll(".konfirmasi-column");
+        for (var i = 0; i < actionColumn.length; i++) {
+            actionColumn[i].style.display = "none";
+        }
+        var rows = table.rows;
+        for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the header row
+            var row = rows[i];
+            var noCell = document.createElement('td');
+            noCell.textContent = i; // Number starts from 1
+            row.insertBefore(noCell, row.firstElementChild);
+        }
+        var tableData = table.outerHTML;
+        var totalJam = 0;
+        var jamFields = table.querySelectorAll('.jam-kerja');
+        for (var i = 0; i < jamFields.length; i++) {
+            var jamText = jamFields[i].textContent;
+            var jam = parseInt(jamText);
+            if (!isNaN(jam)) {
+                totalJam += jam;
+            }
+        }
+        var printPreview = document.createElement('div');
+        printPreview.innerHTML = '<style>body { font-size: 12px; }</style>' +
+            '<div class="d-flex justify-content-between">' +
+            '<h1>PT Bumi Barito Minieral</h1>' +
+            '<h1 class="text-right">Timesheet</h1>' +
+            '</div>' +
+            '<table>' + tableData + '</table>' +
+            '<p>Total Jam Kerja: ' + totalJam + ' jam</p>';
+        document.body.innerHTML = printPreview.innerHTML;
+        window.print();
+        location.reload();
+    }
 </script>

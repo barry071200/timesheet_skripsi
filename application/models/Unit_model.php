@@ -56,6 +56,7 @@ class Unit_model extends CI_Model
     $this->db->join('unit', 'unit.id_unit = timesheet.id_unit', 'left');
     $this->db->join('karyawan', 'timesheet.id_karyawan = karyawan.id_karyawan', 'left');
     $this->db->where('unit.id_unit', $id);
+    $this->db->where('YEAR(timesheet.tanggal)', date('Y'));
     return $this->db->get();
   }
 

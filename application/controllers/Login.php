@@ -69,9 +69,8 @@ class Login extends CI_Controller
         }
       }
     } else {
-      $data['error'] = 'Username atau Password Salah';
+      $this->session->set_flashdata('error', 'Username atau Password Salah!!');
       redirect('login/index');
-      $this->session->set_flashdata('error', 'Username atau password salah');
     }
   }
 

@@ -16,6 +16,7 @@
   <script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -37,9 +38,9 @@
       <ul class="navbar-nav ml-auto">
         <!-- Navbar Search -->
         <li class="nav-item">
-          <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+          <!-- <a class="nav-link" data-widget="navbar-search" href="#" role="button">
             <i class="fas fa-search"></i>
-          </a>
+          </a> -->
           <div class="navbar-search-block">
             <form class="form-inline">
               <div class="input-group input-group-sm">
@@ -115,13 +116,30 @@
               </a>
 
             </li>
-            <li class="nav-item">
-              <a href="<?php echo site_url('dashboard') ?>" class="nav-link">
-                <i class="bi bi-briefcase-fill"></i>
-                <p>Dashboard</p>
-              </a>
-
-            </li>
+            <?php if ($this->session->userdata('role') == '2' or $this->session->userdata('role') == '1') { ?>
+              <li class="nav-item">
+                <a href="<?php echo site_url('Rangkuman') ?>" class="nav-link">
+                  <i class="bi bi-briefcase-fill"></i>
+                  <p>Laporan Bulanan</p>
+                </a>
+              </li>
+            <?php } ?>
+            <?php if ($this->session->userdata('role') == '2' or $this->session->userdata('role') == '1' or $this->session->userdata('role') == '4') { ?>
+              <li class="nav-item">
+                <a href="<?php echo site_url('Rangkuman/index2') ?>" class="nav-link">
+                  <i class="bi bi-cash"></i>
+                  <p>Biaya Sewa</p>
+                </a>
+              </li>
+            <?php } ?>
+            <?php if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '4') { ?>
+              <li class="nav-item">
+                <a href="<?php echo site_url('Rangkuman/index3') ?>" class="nav-link">
+                  <i class="bi bi-currency-dollar"></i>
+                  <p>Premi Karyawan</p>
+                </a>
+              </li>
+            <?php } ?>
             <?php if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '5') { ?>
               <li class="nav-item">
                 <a href="<?php echo site_url('timesheet') ?>" class="nav-link">
@@ -147,7 +165,7 @@
                 </li>
 
               <?php } ?>
-              <?php if ($this->session->userdata('role') == '3') { ?>
+              <?php if ($this->session->userdata('role') == '3' or $this->session->userdata('role') == '1') { ?>
                 <li class="nav-item">
                   <a href="<?php echo site_url('supervisor') ?>" class="nav-link">
                     <i class="bi bi-person-circle"></i>

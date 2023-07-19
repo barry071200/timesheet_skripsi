@@ -69,6 +69,16 @@
                 for (var i = 0; i < actionColumn.length; i++) {
                     actionColumn[i].style.display = "none";
                 }
+
+                // Add a "No" column to the table
+                var rows = table.rows;
+                for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the header row
+                    var row = rows[i];
+                    var noCell = document.createElement('td');
+                    noCell.textContent = i; // Number starts from 1
+                    row.insertBefore(noCell, row.firstElementChild);
+                }
+
                 var tableData = table.outerHTML;
                 var totalJam = 0;
                 var jamFields = table.querySelectorAll('.jam-kerja');
@@ -87,13 +97,15 @@
                     '<h1>PT Bumi Barito Minieral</h1>' +
                     '<h1 class="text-right">Timesheet</h1>' +
                     '</div>' +
-                    '<table>' + tableData + '</table>' +
+                    '<table style="width: 100%; border-collapse: collapse; margin-top: 10px; border: 1px solid black;">' + tableData + '</table>' +
                     '<p>Total Jam Kerja: ' + formattedTotalJam + ' jam</p>';
                 document.body.innerHTML = printPreview.innerHTML;
                 window.print();
                 location.reload();
             }
         </script>
+
+
         <div style="display: flex; align-items: center;">
             <form>
                 <th colspan="4"><a class="btn btn-primary" style="margin-right: 10px;" data-toggle="modal" data-target="#tambahtimesheet" href="<?php echo site_url('timesheet/tambah') ?>"><i class="fa fa-plus"></i> Tambah</a></th>
@@ -132,7 +144,7 @@
             <?php $no = 1;
             foreach ($timesheet as $dt) : ?>
                 <tr>
-                    <td><?php echo $no++; ?></td>
+                    <td class="action-column"><?php echo $no++; ?></td>
                     <td><?php echo $dt['nama_karyawan']; ?></td>
                     <td><?php echo $dt['nama_unit']; ?></td>
                     <td><?php echo $dt['tanggal']; ?></td>

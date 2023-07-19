@@ -40,7 +40,7 @@
             <?php $no = 1;
             foreach ($unit as $dt) : ?>
                 <tr>
-                    <td><?php echo $no++; ?></td>
+                    <td class="action-column"><?php echo $no++; ?></td>
                     <td><?php echo $dt['nama_unit']; ?></td>
                     <td><?php echo $dt['nama_karyawan']; ?></td>
                     <td><?php echo $dt['tanggal']; ?></td>
@@ -67,23 +67,6 @@
                     </td>
                 </tr>
             <?php endforeach ?>
-        <tfoot>
-            <?php
-            foreach ($sum as $dt) : ?>
-                <tr>
-                    <th colspan="2">TOTAL HARGA SEWA</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>:</th>
-                    <th>Rp </th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            <?php endforeach ?>
-        </tfoot>
     </table>
 
 </div>
@@ -146,6 +129,14 @@
                 totalJam += jam;
             }
         }
+        var rows = table.rows;
+        for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the header row
+            var row = rows[i];
+            var noCell = document.createElement('td');
+            noCell.textContent = i; // Number starts from 1
+            row.insertBefore(noCell, row.firstElementChild);
+        }
+
         var formattedTotalJam = totalJam.toFixed(2);
         var tableData = table.outerHTML;
         var totalsewa = 0;
@@ -157,7 +148,6 @@
                 totalsewa += total;
             }
         }
-
 
         var printPreview = document.createElement('div');
         printPreview.innerHTML = '<style>body { font-size: 12px; }</style>' +

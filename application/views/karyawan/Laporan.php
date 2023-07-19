@@ -45,7 +45,7 @@
                 <?php $no = 1;
                 foreach ($karyawan as $dt) : ?>
                     <tr>
-                        <td><?php echo $no++; ?></td>
+                        <td class="action-column"><?php echo $no++; ?></td>
                         <td><?php echo $dt['nama_karyawan']; ?></td>
                         <td><?php echo $dt['nama_unit']; ?></td>
                         <td><?php echo $dt['tanggal']; ?></td>
@@ -73,23 +73,6 @@
                     </tr>
                 <?php endforeach ?>
             </tbody>
-            <tfoot>
-                <?php foreach ($sum as $dt) : ?>
-                    <tr>
-                        <th colspan="2">TOTAL JAM KERJA</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th>:</th>
-                        <!-- <th><?php if ($dt['sum(timesheet.hm_akhir-timesheet.hm_awal)'] != NULL) echo number_format($dt['sum(timesheet.hm_akhir-timesheet.hm_awal)'], 0, ',', '.'); ?> JAM </th> -->
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                <?php endforeach ?>
-            </tfoot>
         </table>
     </div>
     <script>
@@ -152,6 +135,14 @@
                     totalJam += jam;
                 }
             }
+            var rows = table.rows;
+            for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the header row
+                var row = rows[i];
+                var noCell = document.createElement('td');
+                noCell.textContent = i; // Number starts from 1
+                row.insertBefore(noCell, row.firstElementChild);
+            }
+
 
             var formattedTotalJam = totalJam.toFixed(2);
 
@@ -174,7 +165,7 @@
                 '<h1 class="text-right">Timesheet</h1>' +
                 '</div>' +
                 '<table>' + tableData + '</table>' +
-                '<p>Total Jam Kerja: ' + formattedTotalJam + ' jam</p>' + '<p>Total Biaya Sewa: Rp ' + totalsewa.toLocaleString() + '</p>';
+                '<p>Total Jam Kerja: ' + formattedTotalJam + ' jam</p>' + '<p>Total Premi: Rp ' + totalsewa.toLocaleString() + '</p>';
             document.body.innerHTML = printPreview.innerHTML;
             window.print();
             location.reload();

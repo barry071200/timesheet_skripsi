@@ -41,15 +41,18 @@ class Dashboard_model extends CI_Model
   public function counttimesheet()
   {
     $currentYear = date('Y');
-
-    $this->db->where("YEAR(tanggal) = $currentYear");
+    $this->db->where("YEAR(tanggal)", $currentYear);
     $count = $this->db->count_all_results('timesheet');
+
 
     return $count;
   }
   public function countjam()
   {
-    $this->db->select('(SELECT SUM(hm_akhir)-SUM(hm_awal) from timesheet) as jam', FALSE);
+    $currentYear = date('Y');
+    $currentMonth = date('m');
+
+    $this->db->select('(SELECT SUM(hm_akhir) - SUM(hm_awal) FROM timesheet WHERE YEAR(tanggal) = ' . $currentYear . ' AND MONTH(tanggal) = ' . $currentMonth . ') AS jam', FALSE);
     $query = $this->db->get();
     return $query;
   }

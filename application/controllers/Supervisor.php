@@ -32,7 +32,7 @@ class Supervisor extends CI_Controller
 
   public function index()
   {
-    if ($this->session->userdata('role') == '3') {
+    if ($this->session->userdata('role') == '3' or $this->session->userdata('role') == '1') {
       $this->load->model('Supervisor_model');
       $data['timesheet'] = $this->Supervisor_model->ambil()->result_array();
       $data['layout'] = 'supervisor/index';
@@ -45,7 +45,7 @@ class Supervisor extends CI_Controller
   }
   public function ditolak()
   {
-    if ($this->session->userdata('role') == '3') {
+    if ($this->session->userdata('role') == '3' or $this->session->userdata('role') == '1') {
       $this->load->model('Supervisor_model');
       $data['timesheet'] = $this->Supervisor_model->ditolak()->result_array();
       $data['layout'] = 'supervisor/ditolak';
@@ -58,7 +58,7 @@ class Supervisor extends CI_Controller
   }
   public function kosong()
   {
-    if ($this->session->userdata('role') == '3') {
+    if ($this->session->userdata('role') == '3' or $this->session->userdata('role') == '1') {
       $this->load->model('Supervisor_model');
       $data['timesheet'] = $this->Supervisor_model->kosong()->result_array();
       $data['layout'] = 'supervisor/belum';
@@ -71,7 +71,7 @@ class Supervisor extends CI_Controller
   }
   public function tolak($id, $valid)
   {
-    if ($this->session->userdata('role') == '3') {
+    if ($this->session->userdata('role') == '3' or $this->session->userdata('role') == '1') {
       $this->load->model('Supervisor_model');
       $this->Supervisor_model->valid($id, $valid);
       redirect('supervisor/ditolak');
@@ -79,7 +79,7 @@ class Supervisor extends CI_Controller
   }
   public function cek($id, $valid)
   {
-    if ($this->session->userdata('role') == '3') {
+    if ($this->session->userdata('role') == '3' or $this->session->userdata('role') == '1') {
       $this->load->model('Supervisor_model');
       $this->Supervisor_model->valid($id, $valid);
       redirect('supervisor/index');
@@ -87,7 +87,7 @@ class Supervisor extends CI_Controller
   }
   public function belum($id, $valid)
   {
-    if ($this->session->userdata('role') == '3') {
+    if ($this->session->userdata('role') == '3' or $this->session->userdata('role') == '1') {
       $this->load->model('Supervisor_model');
       $this->Supervisor_model->valid($id, $valid);
       redirect('supervisor/kosong');

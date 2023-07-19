@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php if (isset($error)) : ?>
-    <div class="alert alert-danger"><?php echo $error; ?></div>
-<?php endif; ?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+
+
 
 <head>
     <meta charset="utf-8">
@@ -26,11 +27,23 @@
             <div class="card-header text-center">
                 <a href="<?= base_url() ?>assets/index2.html" class="h1"><b>TIMESHEET</b></a>
             </div>
+            <?php if ($this->session->flashdata('error')) : ?>
+                <div class="alert alert-danger">
+                    <?php echo $this->session->flashdata('error'); ?>
+                </div>
+                <script>
+                    setTimeout(function() {
+                        $(".alert").slideUp("slow", function() {
+                            $(this).remove();
+                        });
+                    }, 3000);
+                </script>
+            <?php endif; ?>
             <div class="card-body">
 
                 <form method="post" action="<?php echo site_url("login/cek") ?>">
                     <div class="input-group mb-3">
-                        <input id="username" name="username" type="text" class="form-control" placeholder="Username">
+                        <input id="username" name="username" type="text" class="form-control" required placeholder="Username">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -38,7 +51,7 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input id="password" name="password" type="password" class="form-control" placeholder="Password">
+                        <input id="password" name="password" type="password" class="form-control" required placeholder="Password">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
