@@ -50,16 +50,16 @@
         </div>
     </div>
     <br>
-    <table id="example1" class="table table-striped">
+    <table id="example1" class="table table-striped table-condensed">
         <thead class="table-dark">
             <tr>
-                <th>NO</th>
-                <th>Tahun</th>
-                <th>Bulan</th>
-                <th>Perusahaan</th>
-                <th>Jam Kerja</th>
-                <th>Total Biaya Sewa</th>
-                <th class="opsi-column">Opsi</th>
+                <th class="text-left">NO</th>
+                <th class="text-left">Tahun</th>
+                <th class="text-left">Bulan</th>
+                <th class="text-left">Perusahaan</th>
+                <th class="text-left">Jam Kerja</th>
+                <th class="text-center" style="width: 13%;">Total Biaya Sewa</th>
+                <th class="text-center opsi-column">Opsi</th>
             </tr>
         </thead>
         <tbody>
@@ -72,8 +72,17 @@
                     <td><?php echo $dt['bulan']; ?></td>
                     <td><?php echo $dt['perusahaan']; ?></td>
                     <td><?php echo $dt['total_jam_kerja']; ?> Jam</td>
-                    <td>Rp <?php echo number_format($dt['total_harga'], 0, ',', '.'); ?></td>
-                    <td class="opsi-column">
+                    <td>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                            <div style="text-align: right;">
+                                Rp
+                            </div>
+                            <div style="text-align: right;">
+                                <?php echo number_format($dt['total_harga'], 0, ',', '.'); ?>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="opsi-column text-center align-middle">
                         <?php
                         $target = "#detil-" . str_replace(' ', '_', $dt['tahun']) . '-' . str_replace(' ', '_', $dt['bulan']) . '-' . str_replace(' ', '_', $dt['perusahaan']);
                         ?>
@@ -135,7 +144,16 @@
                                             <td><?php echo $detil_perusahaan; ?></td>
                                             <td><?php echo $d['harga']; ?></td>
                                             <td><?php echo $d['total_jam_kerja']; ?> Jam</td>
-                                            <td>Rp <?php echo number_format($d['total_harga_sewa'], 0, ',', '.'); ?></td>
+                                            <td>
+                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                                                    <div style="text-align: right;">
+                                                        Rp
+                                                    </div>
+                                                    <div style="text-align: right;">
+                                                        <?php echo number_format($d['total_harga_sewa'], 0, ',', '.'); ?>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <?php
                                         $totalJamKerja += $d['total_jam_kerja'];
@@ -153,7 +171,16 @@
                                     <th></th>
                                     <th></th>
                                     <th><?php echo $totalJamKerja; ?> Jam</th>
-                                    <th>Rp <?php echo number_format($totalHargaSewa, 0, ',', '.'); ?></th>
+                                    <th>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                                            <div style="text-align: right;">
+                                                Rp
+                                            </div>
+                                            <div style="text-align: right;">
+                                                <?php echo number_format($totalHargaSewa, 0, ',', '.'); ?>
+                                            </div>
+                                        </div>
+                                    </th>
                                 </tr>
                             </tfoot>
 
@@ -228,7 +255,7 @@
             '</div>' +
             '<table>' + tableData + '</table>' +
             '<div>Total Jam Kerja: ' + totalJamKerja + ' Jam</div>' +
-            '<div>Total Pembayaran: Rp ' + totalHarga.toLocaleString() + '</div>';
+            '<div><th></th>Total Pembayaran: Rp ' + totalHarga.toLocaleString() + '</th></div>';
         document.body.innerHTML = printPreview.innerHTML;
         window.print();
         location.reload();

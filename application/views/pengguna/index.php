@@ -149,11 +149,10 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <form method="post" action="<?php echo site_url("pengguna/tambah") ?>">
-
                             <label for="username">Username</label>
                             <input type="text" required class="form-control" id="username" name="username" placeholder="Masukan Username">
                             <label for="password">Password</label>
-                            <textarea required class="form-control" rows="3" id="password" name="password" placeholder="Masukan Password"></textarea>
+                            <input type="password" required class="form-control" rows="3" id="password" name="password" placeholder="Masukan Password"></input>
                             <label for="role">Role</label>
                             <select required class="form-control" id="role" name="role">
                                 <option value="1">Super Admin</option>
@@ -161,7 +160,6 @@
                                 <option value="3">Supervisor</option>
                                 <option value="4">HR</option>
                                 <option value="5">Admin</option>
-
                             </select>
                     </div>
                     <div class="modal-footer">
@@ -191,7 +189,7 @@
                                 <label for="username">Username</label>
                                 <input type="text" required class="form-control" id="username" name="username" value="<?php echo $dt['username']; ?>">
                                 <label for="password">Password</label>
-                                <input type="text" required class="form-control" id="password" name="password" value="<?php echo $dt['password']; ?>">
+                                <input type="password" required class="form-control" id="password" name="password" value="<?php echo $dt['password']; ?>">
                                 <label for="role">Role</label>
                                 <select required class="form-control" id="role" name="role">
                                     <option value="1" <?php if ($dt['role'] == '1') echo 'selected'; ?>>Super Admin</option>

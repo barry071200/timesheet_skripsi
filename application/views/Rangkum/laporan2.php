@@ -59,8 +59,8 @@
                 <th>Bulan</th>
                 <th>Nama Karyawan</th>
                 <th>Jam Kerja</th>
-                <th>Total Biaya Premi</th>
-                <th class="opsi-column">Opsi</th>
+                <th class="text-center" style="width: 12.5%;">Total Biaya Premi</th>
+                <th class="opsi-column text-center">Opsi</th>
             </tr>
         </thead>
         <tbody>
@@ -72,8 +72,17 @@
                     <td><?php echo $dt['bulan']; ?></td>
                     <td><?php echo $dt['nama_karyawan']; ?></td>
                     <td><?php echo $dt['total_jam_kerja']; ?> Jam</td>
-                    <td>Rp <?php echo number_format($dt['total_harga'], 0, ',', '.'); ?></td>
-                    <td class="opsi-column">
+                    <td>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                            <div style="text-align: right;">
+                                Rp
+                            </div>
+                            <div style="text-align: right;">
+                                <?php echo number_format($dt['total_harga'], 0, ',', '.'); ?>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="opsi-column text-center align-middle">
                         <?php
                         $target = "#detil-" . str_replace(' ', '_', $dt['tahun']) . '-' . str_replace(' ', '_', $dt['bulan']) . '-' . str_replace(' ', '_', $dt['nama_karyawan']);
                         ?>

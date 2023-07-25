@@ -23,7 +23,7 @@
                 <th>JUMLAH</th>
                 <th>KETERANGAN</th>
                 <th class="action-column">CEK</th>
-                <th>KONFIRMASI</th>
+                <th class="text-center">KONFIRMASI</th>
 
 
             </tr>
@@ -57,7 +57,7 @@
                             </span>
                         <?php endif; ?>
                     </td>
-                    <td class="action-column">
+                    <td class="action-column text-center align-middle">
                         <form method="post" action="<?php echo site_url("supervisor/cek") ?>">
                             <a class="btn btn-success" href="<?php echo site_url("supervisor/cek") . "/" . $dt['id_timesheet'] . "/" . $valid; ?>">Diterima</a>
                             <a class="btn btn-warning" href="<?php echo site_url("supervisor/cek") . "/" . $dt['id_timesheet'] . "/" . $tValid; ?>">Ditolak</a>

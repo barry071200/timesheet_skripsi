@@ -116,7 +116,7 @@
               </a>
 
             </li>
-            <?php if ($this->session->userdata('role') == '2' or $this->session->userdata('role') == '1') { ?>
+            <?php if ($this->session->userdata('role') == '2') { ?>
               <li class="nav-item">
                 <a href="<?php echo site_url('Rangkuman') ?>" class="nav-link">
                   <i class="bi bi-briefcase-fill"></i>
@@ -124,7 +124,7 @@
                 </a>
               </li>
             <?php } ?>
-            <?php if ($this->session->userdata('role') == '2' or $this->session->userdata('role') == '1' or $this->session->userdata('role') == '4') { ?>
+            <?php if ($this->session->userdata('role') == '2' or  $this->session->userdata('role') == '4') { ?>
               <li class="nav-item">
                 <a href="<?php echo site_url('Rangkuman/index2') ?>" class="nav-link">
                   <i class="bi bi-cash"></i>
@@ -132,7 +132,7 @@
                 </a>
               </li>
             <?php } ?>
-            <?php if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '4') { ?>
+            <?php if ($this->session->userdata('role') == '4') { ?>
               <li class="nav-item">
                 <a href="<?php echo site_url('Rangkuman/index3') ?>" class="nav-link">
                   <i class="bi bi-currency-dollar"></i>
@@ -140,60 +140,93 @@
                 </a>
               </li>
             <?php } ?>
-            <?php if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '5') { ?>
+            <?php if ($this->session->userdata('role') == '5') { ?>
               <li class="nav-item">
                 <a href="<?php echo site_url('timesheet') ?>" class="nav-link">
                   <i class="fa fa-edit"></i>
                   <p>Timesheet</p>
                 </a>
-              <?php } ?>
               </li>
-              <?php if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '4' or $this->session->userdata('role') == '5' or $this->session->userdata('role') == '3') { ?>
-                <li class="nav-item">
-                  <a href="<?php echo site_url('karyawan') ?>" class="nav-link">
-                    <i class="bi bi-people-fill"></i>
-                    <p>Karyawan</p>
-                  </a>
-                </li>
-              <?php } ?>
-              <?php if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '4' or $this->session->userdata('role') == '5' or $this->session->userdata('role') == '3') { ?>
-                <li class="nav-item">
-                  <a href="<?php echo site_url('unit') ?>" class="nav-link">
-                    <i class="bi bi-list-task"></i>
-                    <p>Unit</p>
-                  </a>
-                </li>
-
-              <?php } ?>
-              <?php if ($this->session->userdata('role') == '3' or $this->session->userdata('role') == '1') { ?>
-                <li class="nav-item">
-                  <a href="<?php echo site_url('supervisor') ?>" class="nav-link">
-                    <i class="bi bi-person-circle"></i>
-                    <p>Validasi</p>
-                  </a>
-                </li>
-              <?php } ?>
-
+            <?php } ?>
+            <?php if ($this->session->userdata('role') == '4' or $this->session->userdata('role') == '5' or $this->session->userdata('role') == '3') { ?>
+              <li class="nav-item">
+                <a href="<?php echo site_url('karyawan') ?>" class="nav-link">
+                  <i class="bi bi-people-fill"></i>
+                  <p>Karyawan</p>
+                </a>
               </li>
-              <?php if ($this->session->userdata('role') == '1') { ?>
-                <li class="nav-item">
-                  <a href="<?php echo site_url('Pengguna') ?>" class="nav-link">
-                    <i class="bi bi-person-plus"></i>
-                    <p>Pengguna</p>
-                  </a>
-                <?php } ?>
+            <?php } ?>
+            <?php if ($this->session->userdata('role') == '4' or $this->session->userdata('role') == '5' or $this->session->userdata('role') == '3') { ?>
+              <li class="nav-item">
+                <a href="<?php echo site_url('unit') ?>" class="nav-link">
+                  <i class="bi bi-list-task"></i>
+                  <p>Unit</p>
+                </a>
+              </li>
+            <?php } ?>
+            <?php if ($this->session->userdata('role') == '3') { ?>
+              <li class="nav-item">
+                <a href="<?php echo site_url('supervisor') ?>" class="nav-link">
+                  <i class="bi bi-person-circle"></i>
+                  <p>Validasi</p>
+                </a>
+              </li>
+            <?php } ?>
+            <?php if ($this->session->userdata('role') == '1') { ?>
+              <li class="nav-item">
+                <a href="<?php echo site_url('deleted/timesheet') ?>" class="nav-link">
+                  <i class="bi bi-archive"></i>
+                  <p>Arsip</p>
+                </a>
+              </li>
+            <?php } ?>
 
-                </li>
-
-                <li class="nav-item">
-                  <a href="<?php echo site_url('login/logout') ?>" class="nav-link">
-                    <i class="bi bi-box-arrow-left"></i>
-                    <p>logout</p>
-                  </a>
-                </li>
-
-                </li>
-
+            <?php if ($this->session->userdata('role') == '1') { ?>
+              <li class="nav-item">
+                <a href="<?php echo site_url('Pengguna') ?>" class="nav-link">
+                  <i class="bi bi-person-plus"></i>
+                  <p>Pengguna</p>
+                </a>
+              </li>
+            <?php } ?>
+            <?php if ($this->session->userdata('role') == '1') { ?>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa fa-trash"></i>
+                  <p>
+                    Trash
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="<?php echo site_url('deleted/timesheet') ?>" class="nav-link">
+                      <i class="far fa fa-edit"></i>
+                      <p>Timesheet Deleted</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="<?php echo site_url('deleted/karyawan') ?>" class="nav-link">
+                      <i class="far bi bi-people-fill"></i>
+                      <p>Karyawan Deleted</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="<?php echo site_url('deleted/unit') ?>" class="nav-link">
+                      <i class="far bi bi-list-task"></i>
+                      <p>Unit Deleted</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            <?php } ?>
+            <li class="nav-item">
+              <a href="<?php echo site_url('login/logout') ?>" class="nav-link">
+                <i class="bi bi-box-arrow-left"></i>
+                <p>logout</p>
+              </a>
+            </li>
+            </li>
           </ul>
         </nav>
         <!-- /.sidebar-menu -->

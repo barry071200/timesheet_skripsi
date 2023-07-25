@@ -34,7 +34,7 @@ class Timesheet extends CI_Controller
 
   public function index()
   {
-    if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '5') {
+    if ($this->session->userdata('role') == '5') {
       $this->load->model('Timesheet_model');
       $data['timesheet'] = $this->Timesheet_model->ambil()->result_array();
       $data['unit'] = $this->Timesheet_model->unit()->result();
@@ -48,7 +48,7 @@ class Timesheet extends CI_Controller
   }
   public function ditolak()
   {
-    if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '5') {
+    if ($this->session->userdata('role') == '5') {
       $this->load->model('Timesheet_model');
       $data['timesheet'] = $this->Timesheet_model->ditolak()->result_array();
       $data['unit'] = $this->Timesheet_model->unit()->result();
@@ -64,10 +64,8 @@ class Timesheet extends CI_Controller
 
   public function tambah()
   {
-    if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '5') {
+    if ($this->session->userdata('role') == '5') {
       $this->load->model('timesheet_model');
-
-      // Jika validasi berhasil, proses data tambahan
       $data = array();
       $post = $this->input->post();
       $data['id_karyawan'] = $post['id_karyawan'];
@@ -87,7 +85,7 @@ class Timesheet extends CI_Controller
 
   public function delete($id)
   {
-    if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '5') {
+    if ($this->session->userdata('role') == '5') {
       $this->load->model('timesheet_model');
       $this->timesheet_model->hapus($id);
       $this->session->set_flashdata('admin_hapus_success', 'Hapus berhasil');
@@ -105,22 +103,23 @@ class Timesheet extends CI_Controller
   }
   public function edit()
   {
-    $data = array();
-    $this->load->model('timesheet_model');
-    $post = $this->input->post();
-    $id = $post['id_timesheet'];
-    $data['id_timesheet'] = $post['id_timesheet'];
-    $data['id_unit'] = $post['id_unit'];
-    $data['id_karyawan'] = $post['id_karyawan'];
-    $data['tanggal'] = $post['tanggal'];
-    $data['hm_awal'] = $post['hm_awal'];
-    $data['hm_akhir'] = $post['hm_akhir'];
-    $data['keterangan'] = $post['keterangan'];
-    $this->timesheet_model->ubah_data($id, $data);
-    $this->session->set_flashdata('admin_save_success', 'Update berhasil');
-    redirect('timesheet/index');
+    if ($this->session->userdata('role') == '5') {
+      $data = array();
+      $this->load->model('timesheet_model');
+      $post = $this->input->post();
+      $id = $post['id_timesheet'];
+      $data['id_timesheet'] = $post['id_timesheet'];
+      $data['id_unit'] = $post['id_unit'];
+      $data['id_karyawan'] = $post['id_karyawan'];
+      $data['tanggal'] = $post['tanggal'];
+      $data['hm_awal'] = $post['hm_awal'];
+      $data['hm_akhir'] = $post['hm_akhir'];
+      $data['keterangan'] = $post['keterangan'];
+      $this->timesheet_model->ubah_data($id, $data);
+      $this->session->set_flashdata('admin_save_success', 'Update berhasil');
+      redirect('timesheet/index');
+    }
   }
-
   public function clear_flash_data()
   {
     $this->session->unset_userdata('admin_save_success');
@@ -130,21 +129,24 @@ class Timesheet extends CI_Controller
 
   public function unit()
   {
-    $this->load->model('Unit_model');
-    $data['unit'] = $this->Unit_model->ambil()->result_array();
-    $data['layout'] = 'timesheet/index';
-    $data['judul'] = 'Data Unit';
-    $this->load->view('template', $data);
+    if ($this->session->userdata('role') == '5') {
+      $this->load->model('Unit_model');
+      $data['unit'] = $this->Unit_model->ambil()->result_array();
+      $data['layout'] = 'timesheet/index';
+      $data['judul'] = 'Data Unit';
+      $this->load->view('template', $data);
+    }
   }
 
   public function karyawan()
   {
-
-    $this->load->model('karyawan_model');
-    $data['karyawan'] = $this->karyawan_model->ambil()->result_array();
-    $data['judul'] = "Data Karyawan";
-    $data['layout'] = "timesheet/index";
-    $this->load->view('template', $data);
+    if ($this->session->userdata('role') == '5') {
+      $this->load->model('karyawan_model');
+      $data['karyawan'] = $this->karyawan_model->ambil()->result_array();
+      $data['judul'] = "Data Karyawan";
+      $data['layout'] = "timesheet/index";
+      $this->load->view('template', $data);
+    }
   }
 }
 

@@ -84,9 +84,9 @@
                 <th>Nama Unit</th>
                 <th>Perusahaan</th>
                 <th>Tahun</th>
-                <th>Harga/Jam</th>
-                <?php if ($this->session->userdata('role') == '4' or $this->session->userdata('role') == '1') { ?><th class="action-column">Action</th><?php } ?>
-                <?php if ($this->session->userdata('role') != '4') { ?><th class="sheet-column">TIMESHEET</th><?php } ?>
+                <th class="text-center" style="width: 8%;">Harga/Jam</th>
+                <?php if ($this->session->userdata('role') == '4' or $this->session->userdata('role') == '1') { ?><th class="action-column text-center">Action</th><?php } ?>
+                <?php if ($this->session->userdata('role') != '4') { ?><th class="sheet-column text-center">TIMESHEET</th><?php } ?>
 
             </tr>
         </thead>
@@ -98,32 +98,35 @@
                     <td><?php echo $dt['nama_unit']; ?></td>
                     <td><?php echo $dt['perusahaan']; ?></td>
                     <td><?php echo $dt['tahun']; ?></td>
-                    <td><?php echo number_format($dt['harga'], 0, ',', '.'); ?></td>
+                    <td>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="text-align: left;">
+                                Rp
+                            </div>
+                            <div style="text-align: right; margin-right: 15px">
+                                <?php echo number_format($dt['harga'], 0, ',', '.'); ?>
+                            </div>
+                        </div>
+                    </td>
                     <?php if ($this->session->userdata('role') == '4' or $this->session->userdata('role') == '1') { ?>
-                        <td class="action-column">
+                        <td class="action-column text-center align-middle">
                             <a class="btn btn-warning" data-toggle="modal" data-target="#ubahunit<?php echo $dt['id_unit']; ?>">Edit</a>
                             <a class="btn btn-danger btn-delete" href="<?php echo site_url("unit/delete") . "/" . $dt['id_unit']; ?>">Hapus<span class="glyphicon glyphicon-remove"></span></a>
                         </td>
                     <?php } ?>
                     <?php if ($this->session->userdata('role') != '4') { ?>
-                        <td class="sheet-column"> <a class="btn btn-success" href="<?php echo site_url("unit/sheet") . "/" . $dt['id_unit']; ?>">SHEET</a></td>
+                        <td class="sheet-column text-center align-middle"> <a class="btn btn-success" href="<?php echo site_url("unit/sheet") . "/" . $dt['id_unit']; ?>">SHEET</a></td>
                     <?php } ?>
                 </tr>
             <?php endforeach ?>
 
     </table>
     <script>
-        // Saat halaman dimuat
         window.addEventListener('DOMContentLoaded', function() {
-            // Dapatkan tombol hapus
             var deleteButtons = document.querySelectorAll('.btn-delete');
-
-            // Tambahkan event listener pada setiap tombol hapus
             deleteButtons.forEach(function(button) {
                 button.addEventListener('click', function(event) {
-                    event.preventDefault(); // Menghentikan aksi default dari tombol hapus
-
-                    // Tampilkan konfirmasi Sweet Alert
+                    event.preventDefault();
                     Swal.fire({
                         title: "Konfirmasi",
                         text: "Apakah Anda yakin ingin menghapus?",
@@ -134,7 +137,6 @@
                         cancelButtonText: "Batal"
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Arahkan ke aksi penghapusan
                             window.location.href = button.getAttribute('href');
                         }
                     });
@@ -142,7 +144,6 @@
             });
         });
     </script>
-    <!-- sweet alert -->
     <div class="modal fade" id="tambahunit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -153,11 +154,11 @@
                     <div class="form-group">
                         <form method="post" action="<?php echo site_url("unit/tambah") ?>">
                             <label for="nama_unit">Nama Unit</label>
-                            <input type="text" required class="form-control" id="nama_unit" name="nama_unit" placeholder="Masukan Nama Unit">
+                            <input type="text" required class="form-control" id="nama_unit" name="nama_unit" placeholder="Masukan Nama Unit" onchange="checkDuplicateName()">
                             <label for="perusahaan">Perusahaan</label>
                             <input type="text" required class="form-control" id="perusahaan" name="perusahaan" placeholder="Masukan Nama Perusahaan">
                             <label for="tahun">Tahun</label>
-                            <input type="text" required class="form-control" id="tahun" name="tahun" placeholder="Masukan Tahun Pembelian (4 karakter)">
+                            <input type="text" required class="form-control" id="tahun" name="tahun" placeholder="Masukan Tahun Pembelian (4 karakter)" maxlength="4">
                             <label for="harga">Harga/Jam</label>
                             <input type="number" required class="form-control" id="harga" name="harga" placeholder="Masukan Harga Sewa Unit Per jam">
                     </div>
@@ -167,17 +168,18 @@
                     </div>
                     </form>
                 </div>
-
-                <script>
-                    // Menggunakan JavaScript untuk membatasi input tahun hanya angka dengan batas 4 karakter
-                    var tahunInputTambah = document.getElementById('tahun');
-                    tahunInputTambah.addEventListener('input', function() {
-                        this.value = this.value.replace(/\D/g, '').slice(0, 4);
-                    });
-                </script>
             </div>
         </div>
     </div>
+
+    <script>
+        // Validasi input tahun agar hanya menerima angka dan panjang maksimal 4 karakter
+        var tahunInputTambah = document.getElementById('tahun');
+        tahunInputTambah.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 4);
+        });
+    </script>
+
 
     <?php $no = 0;
     foreach ($unit as $dt) : $no++ ?>
@@ -226,6 +228,23 @@
     $(document).ready(function() {
         $('#example1').DataTable();
     });
+</script>
+<script>
+    function checkDuplicateName() {
+        var nameInput = document.getElementById("nama_unit").value;
+        var existingNames = <?php echo json_encode(array_column($unit, 'nama_unit')); ?>;
+
+        if (existingNames.includes(nameInput)) {
+            event.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Nama Unit sudah terdaptar dalam sistem ganti dengan nama lain!!!',
+            });
+            document.getElementById("nama_unit").value = "";
+        }
+
+    }
 </script>
 <script>
     function printData() {

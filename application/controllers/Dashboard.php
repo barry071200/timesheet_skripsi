@@ -11,31 +11,18 @@ class Dashboard extends CI_Controller
     $data['timesheet'] = $this->dashboard_model->counttimesheet();
     $data['jam'] = $this->dashboard_model->countjam()->result_array();
     $data['genderData'] = $this->dashboard_model->getGenderData();
-    if (empty($selectedMonth) && empty($selectedYear)) {
-      $selectedMonth = date('m');
-      $selectedYear = date('Y');
-    }
-    $filterCondition = "";
-    if (!empty($selectedMonth) && !empty($selectedYear)) {
-      $filterCondition = "AND MONTH(timesheet.tanggal) = $selectedMonth AND YEAR(timesheet.tanggal) = $selectedYear";
-    } elseif (!empty($selectedMonth) && $selectedMonth !== 'all') {
-      $filterCondition = "AND MONTH(timesheet.tanggal) = $selectedMonth";
-    } elseif (!empty($selectedYear)) {
-      $filterCondition = "AND YEAR(timesheet.tanggal) = $selectedYear";
-    }
 
     $query = $this->db->query(
       "SELECT timesheet.id_karyawan, karyawan.nama_karyawan, 
-        DATE_FORMAT(timesheet.tanggal, '%M %Y') AS bulan, SUM(timesheet.hm_akhir - timesheet.hm_awal) AS jam 
+      DATE_FORMAT(timesheet.tanggal, '%M %Y') AS bulan, SUM(timesheet.hm_akhir - timesheet.hm_awal) AS jam 
       FROM timesheet 
       JOIN karyawan ON timesheet.id_karyawan = karyawan.id_karyawan
-      WHERE timesheet.tanggal IS NULL OR (MONTH(timesheet.tanggal) = $selectedMonth AND YEAR(timesheet.tanggal) = $selectedYear)
-      $filterCondition
+      WHERE timesheet.tanggal IS NULL OR 
+      (MONTH(timesheet.tanggal) = MONTH(CURDATE()) AND YEAR(timesheet.tanggal) = YEAR(CURDATE()))
       GROUP BY timesheet.id_karyawan, karyawan.nama_karyawan, bulan 
       ORDER BY jam DESC 
       LIMIT 5"
     );
-
 
     $data['chartData'] = $query->result_array();
     $jenis = $this->db->query("SELECT perusahaan, COUNT(*) as jumlah_unit from unit group by perusahaan");
@@ -61,8 +48,6 @@ class Dashboard extends CI_Controller
     $jumlah = $ditolak->row()->jumlah;
     $data['jumlah'] = $jumlah;
     $data['total'] = $total;
-    $data['selectedMonth'] = $selectedMonth;
-    $data['selectedYear'] = $selectedYear;
     $data['judul'] = "Dashboard";
     $data['layout'] = "dashboard";
     $this->load->view('template', $data);

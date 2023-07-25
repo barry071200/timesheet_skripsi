@@ -86,10 +86,10 @@
                 <th>No Telpon</th>
                 <th>Tanggal Lahir</th>
                 <th>jenis kelamin</th>
-                <th>Premi</th>
+                <th class="text-center" style="width: 10%;">Premi</th>
 
-                <?php if ($this->session->userdata('role') == '4' or $this->session->userdata('role') == '1') { ?><th class="action-column">Action</th><?php } ?>
-                <?php if ($this->session->userdata('role') != '4') { ?><th class="timesheet-column">TIMESHEET</th><?php } ?>
+                <?php if ($this->session->userdata('role') == '4' or $this->session->userdata('role') == '1') { ?><th class="action-column text-center align-middle">Action</th><?php } ?>
+                <?php if ($this->session->userdata('role') != '4') { ?><th class="timesheet-column text-center">TIMESHEET</th><?php } ?>
 
             </tr>
         </thead>
@@ -103,52 +103,27 @@
                     <td><?php echo $dt['no_telpon']; ?></td>
                     <td><?php echo $dt['tgl_lahir']; ?></td>
                     <td><?php echo $dt['jenis_kelamin']; ?></td>
-                    <td><?php echo number_format($dt['premi'], 0, ',', '.'); ?></td>
-
+                    <td>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div style="margin-left: 0px;">
+                                Rp
+                            </div>
+                            <div style="text-align: right; margin-right: 30px">
+                                <?php echo number_format($dt['premi'], 0, ',', '.'); ?>
+                            </div>
+                        </div>
+                    </td>
                     <?php if ($this->session->userdata('role') == '4' or $this->session->userdata('role') == '1') { ?>
-                        <td class="action-column">
+                        <td class="action-column text-center align-middle">
                             <a class="btn btn-warning" data-toggle="modal" data-target="#ubahkaryawan<?php echo $dt['id_karyawan']; ?>">Edit</a>
                             <a class="btn btn-danger btn-delete" href="<?php echo site_url("karyawan/delete") . "/" . $dt['id_karyawan']; ?>">Hapus<span class="glyphicon glyphicon-remove"></span></a>
                         </td>
                     <?php } ?>
                     <?php if ($this->session->userdata('role') != '4') { ?>
-                        <td class="timesheet-column"> <a class="btn btn-success" href="<?php echo site_url("karyawan/sheet") . "/" . $dt['id_karyawan']; ?>">SHEET</a></td>
+                        <td class="timesheet-column text-center align-middle"> <a class="btn btn-success" href="<?php echo site_url("karyawan/sheet") . "/" . $dt['id_karyawan']; ?>">SHEET</a></td>
                     <?php } ?>
                 </tr>
             <?php endforeach ?>
-            <!-- sweet alert -->
-            <script>
-                // Saat halaman dimuat
-                window.addEventListener('DOMContentLoaded', function() {
-                    // Dapatkan tombol hapus
-                    var deleteButtons = document.querySelectorAll('.btn-delete');
-
-                    // Tambahkan event listener pada setiap tombol hapus
-                    deleteButtons.forEach(function(button) {
-                        button.addEventListener('click', function(event) {
-                            event.preventDefault(); // Menghentikan aksi default dari tombol hapus
-
-                            // Tampilkan konfirmasi Sweet Alert
-                            Swal.fire({
-                                title: "Konfirmasi",
-                                text: "Apakah Anda yakin ingin menghapus?",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#DD6B55",
-                                confirmButtonText: "Hapus",
-                                cancelButtonText: "Batal"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    // Arahkan ke aksi penghapusan
-                                    window.location.href = button.getAttribute('href');
-                                }
-                            });
-                        });
-                    });
-                });
-            </script>
-            <!-- sweet alert -->
-
     </table>
     <div class="modal fade" id="tambahkaryawan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -161,7 +136,7 @@
                         <form method="post" action="<?php echo site_url("karyawan/tambah") ?>">
 
                             <label for="nama_karyawan">Nama Lengkap</label>
-                            <input type="text" required class="form-control" id="nama_karyawan" name="nama_karyawan" placeholder="Masukkan Nama Lengkap">
+                            <input type="text" required class="form-control" id="nama_karyawan" name="nama_karyawan" placeholder="Masukkan Nama Lengkap" onchange="checkDuplicateName()">
                             <label for="alamat">Alamat</label>
                             <textarea required class="form-control" rows="3" id="alamat" name="alamat" placeholder="Masukkan Alamat Karyawan"></textarea>
                             <label for="no_telpon">Nomor Telpon</label>
@@ -176,16 +151,13 @@
                             </select>
                             <label for="premi">Premi</label>
                             <input type="number" required class="form-control" id="premi" name="premi" placeholder="Masukan Premi Operator Per jam">
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                     </form>
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -232,6 +204,55 @@
     <?php endforeach ?>
 
 </div>
+<script>
+    function checkDuplicateName() {
+        var nameInput = document.getElementById("nama_karyawan").value;
+        var existingNames = <?php echo json_encode(array_column($karyawan, 'nama_karyawan')); ?>;
+
+        if (existingNames.includes(nameInput)) {
+            event.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Nama sudah terdaftar di terdaptar dalam sistem ganti dengan nama lain!!!',
+            });
+            document.getElementById("nama_karyawan").value = "";
+        }
+
+    }
+</script>
+<!-- sweet alert -->
+<script>
+    // Saat halaman dimuat
+    window.addEventListener('DOMContentLoaded', function() {
+        // Dapatkan tombol hapus
+        var deleteButtons = document.querySelectorAll('.btn-delete');
+
+        // Tambahkan event listener pada setiap tombol hapus
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault(); // Menghentikan aksi default dari tombol hapus
+
+                // Tampilkan konfirmasi Sweet Alert
+                Swal.fire({
+                    title: "Konfirmasi",
+                    text: "Apakah Anda yakin ingin menghapus?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Hapus",
+                    cancelButtonText: "Batal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Arahkan ke aksi penghapusan
+                        window.location.href = button.getAttribute('href');
+                    }
+                });
+            });
+        });
+    });
+</script>
+<!-- sweet alert -->
 <script>
     function printData() {
         var table = document.getElementById('example1');

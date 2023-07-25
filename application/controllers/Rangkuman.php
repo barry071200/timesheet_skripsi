@@ -5,7 +5,7 @@ class Rangkuman extends CI_Controller
 {
     public function index()
     {
-        if ($this->session->userdata('role') == '2' or $this->session->userdata('role') == '1') {
+        if ($this->session->userdata('role') == '2') {
             $rangkum = $this->db->query("SELECT DATE_FORMAT(tanggal, '%M') AS bulan,
                                         YEAR(tanggal) AS tahun,
                                         SUM((ts.hm_akhir - ts.hm_awal) * u.harga) AS total_harga,
@@ -28,7 +28,7 @@ class Rangkuman extends CI_Controller
     }
     public function index2()
     {
-        if ($this->session->userdata('role') == '2' or $this->session->userdata('role') == '1' or $this->session->userdata('role') == '4') {
+        if ($this->session->userdata('role') == '2' or $this->session->userdata('role') == '4') {
             $rangkum = $this->db->query("SELECT DATE_FORMAT(tanggal, '%M') AS bulan,
                                         YEAR(tanggal) AS tahun, u.perusahaan,
                                         SUM((ts.hm_akhir - ts.hm_awal) * u.harga) AS total_harga,
@@ -59,7 +59,7 @@ class Rangkuman extends CI_Controller
     }
     public function index3()
     {
-        if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '4') {
+        if ($this->session->userdata('role') == '4') {
             $rangkum = $this->db->query("SELECT DATE_FORMAT(tanggal, '%M') AS bulan, 
                                         YEAR(tanggal) AS tahun, k.nama_karyawan,
                                         SUM((ts.hm_akhir - ts.hm_awal) * k.premi) AS total_harga,
@@ -70,7 +70,7 @@ class Rangkuman extends CI_Controller
                                         GROUP BY YEAR(tanggal) desc, MONTH(tanggal) desc, k.nama_karyawan");
             $data['rangkum3'] = $rangkum->result_array();
             $detil = $this->db->query("SELECT
-             tanggal,
+            tanggal,
             u.nama_unit,
             k.nama_karyawan,
             k.premi,
@@ -78,16 +78,14 @@ class Rangkuman extends CI_Controller
             SUM(ts.hm_akhir - ts.hm_awal) AS total_jam_kerja
         FROM
             timesheet ts
-        JOIN
+        LEFT JOIN
             unit u ON ts.id_unit = u.id_unit
-        JOIN
+        LEFT JOIN
             karyawan k ON ts.id_karyawan = k.id_karyawan
-        WHERE
-            u.perusahaan IS NOT NULL
         GROUP BY
             tanggal, u.nama_unit, k.nama_karyawan, k.premi
         ORDER BY
-            tanggal");
+            tanggal;");
             $data['detil'] = $detil->result_array();
             $data['judul'] = "Laporan Premi Bulanan";
             $data['layout'] = "Rangkum/laporan2";

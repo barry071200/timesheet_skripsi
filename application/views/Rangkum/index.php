@@ -53,9 +53,9 @@
                 <th>Tahun</th>
                 <th>Bulan</th>
                 <th>Jam Kerja</th>
-                <th>Biaya Sewa Bulanan</th>
-                <th>Biaya Premi Bulanan</th>
-                <th>Total Pengeluaran</th>
+                <th class="text-center" style="width: 13%;">Biaya Sewa Bulanan</th>
+                <th class="text-center" style="width: 13%;">Biaya Premi Bulanan</th>
+                <th class="text-center" style="width: 13%;">Total Pengeluaran</th>
             </tr>
         </thead>
         <tbody>
@@ -66,9 +66,36 @@
                     <td><?php echo $dt['tahun']; ?></td>
                     <td><?php echo $dt['bulan']; ?></td>
                     <td><?php echo $dt['total_jam_kerja']; ?> Jam</td>
-                    <td>Rp <?php echo number_format($dt['total_harga'], 0, ',', '.'); ?></td>
-                    <td>Rp <?php echo number_format($dt['total_premi'], 0, ',', '.'); ?></td>
-                    <td>Rp <?php echo number_format($dt['total_premi'] + $dt['total_harga'], 0, ',', '.'); ?></td>
+                    <td>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                            <div style="text-align: right;">
+                                Rp
+                            </div>
+                            <div style="text-align: right;">
+                                <?php echo number_format($dt['total_harga'], 0, ',', '.'); ?>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                            <div style="text-align: right;">
+                                Rp
+                            </div>
+                            <div style="text-align: right;">
+                                <?php echo number_format($dt['total_premi'], 0, ',', '.'); ?>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                            <div style="text-align: right;">
+                                Rp
+                            </div>
+                            <div style="text-align: right;">
+                                <?php echo number_format($dt['total_premi'] + $dt['total_harga'], 0, ',', '.'); ?>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </tbody>

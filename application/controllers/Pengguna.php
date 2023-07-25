@@ -56,37 +56,45 @@ class Pengguna extends CI_Controller
             $data = array();
             $post = $this->input->post();
             $data['username'] = $post['username'];
-            $data['password'] = $post['password'];
+            $password = $post['password'];
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+            $data['password'] = $hashedPassword;
             $data['role'] = $post['role'];
-
             $this->Pengguna_model->tambah($data);
-            $this->session->set_flashdata('admin_save_success', 'Tambah berhasil');
+            $this->session->set_flashdata(
+                'admin_save_success',
+                'Tambah berhasil'
+            );
             redirect('pengguna/index');
         } else {
             redirect('login/index');
         }
     }
+
     public function delete($id)
     {
-        $this->load->model("pengguna_model");
-        $this->pengguna_model->hapus_data($id);
-        redirect('pengguna/index');
+        if ($this->session->userdata('role') == '1') {
+            $this->load->model("pengguna_model");
+            $this->pengguna_model->hapus_data($id);
+            redirect('pengguna/index');
+        }
     }
     public function edit()
     {
-
-        $data = array();
-        $this->load->model('pengguna_model');
-        $post = $this->input->post();
-        $id = $post['id_user'];
-        $data['id_user'] = $post['id_user'];
-        $data['username'] = $post['username'];
-        $data['password'] = $post['password'];
-        $data['role'] = $post['role'];
-        $this->pengguna_model->ubah_data($id, $data);
-        $this->session->set_flashdata('admin_save_success', 'Update berhasil');
-        redirect('pengguna/index');
-        $this->session->set_flashdata('admin_save_success', "data berhasil Dimasukan");
+        if ($this->session->userdata('role') == '1') {
+            $data = array();
+            $this->load->model('pengguna_model');
+            $post = $this->input->post();
+            $id = $post['id_user'];
+            $data['id_user'] = $post['id_user'];
+            $data['username'] = $post['username'];
+            $data['password'] = $post['password'];
+            $data['role'] = $post['role'];
+            $this->pengguna_model->ubah_data($id, $data);
+            $this->session->set_flashdata('admin_save_success', 'Update berhasil');
+            redirect('pengguna/index');
+            $this->session->set_flashdata('admin_save_success', "data berhasil Dimasukan");
+        }
     }
 }
 

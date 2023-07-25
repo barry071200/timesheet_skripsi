@@ -31,7 +31,7 @@ class Unit extends CI_Controller
 
   public function index()
   {
-    if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '4' or $this->session->userdata('role') == '5' or $this->session->userdata('role') == '3') {
+    if ($this->session->userdata('role') == '4' or $this->session->userdata('role') == '5' or $this->session->userdata('role') == '3') {
       $this->load->model('Unit_model');
       $data['unit'] = $this->Unit_model->ambil()->result_array();
       $data['layout'] = 'unit/index';
@@ -41,19 +41,23 @@ class Unit extends CI_Controller
   }
   public function tambah()
   {
-    if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '4') {
+    if ($this->session->userdata('role') == '4') {
       $this->load->model('unit_model');
-      $data = array();
-      $post = $this->input->post();
-      $data['nama_unit'] = $post['nama_unit'];
-      $data['tahun'] = $post['tahun'];
-      $data['perusahaan'] = $post['perusahaan'];
-      $data['harga'] = $post['harga'];
-      $this->unit_model->tambah($data);
-      $this->session->set_flashdata('admin_save_success', "data berhasil Dimasukan");
-      redirect('unit/index');
+
+      if ($this->input->post()) {
+        $data = array();
+        $post = $this->input->post();
+        $data['nama_unit'] = $post['nama_unit'];
+        $data['tahun'] = $post['tahun'];
+        $data['perusahaan'] = $post['perusahaan'];
+        $data['harga'] = $post['harga'];
+        $this->unit_model->tambah($data);
+        $this->session->set_flashdata('admin_save_success', 'Data berhasil dimasukan');
+        redirect('unit/index');
+      }
     }
   }
+
   public function clear_flash_data()
   {
     $this->session->unset_userdata('admin_save_success');
@@ -61,7 +65,7 @@ class Unit extends CI_Controller
   }
   public function edit()
   {
-    if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '4') {
+    if ($this->session->userdata('role') == '4') {
       $data = array();
       $this->load->model('Unit_model');
       $post = $this->input->post();
@@ -77,7 +81,7 @@ class Unit extends CI_Controller
   }
   public function delete($id)
   {
-    if ($this->session->userdata('role') == '1' or $this->session->userdata('role') == '4') {
+    if ($this->session->userdata('role') == '4') {
       $this->load->model('Unit_model');
       $this->Unit_model->hapus_data($id);
       redirect('unit/index');
@@ -85,13 +89,14 @@ class Unit extends CI_Controller
   }
   public function sheet($id)
   {
-    $this->load->model('unit_model');
-    $this->load->model('Timesheet_model');
-    $data['unit'] = $this->unit_model->sheet($id)->result_array();
-    $data['sum'] = $this->Timesheet_model->sumharga($id)->result_array();
-    $data['layout'] = 'unit/Laporan';
-    $data['judul'] = 'Data Timesheet';
-    $this->load->view('template', $data);
+    if ($this->session->userdata('role') != '4') {
+      $this->load->model('unit_model');
+      $this->load->model('Timesheet_model');
+      $data['unit'] = $this->unit_model->sheet($id)->result_array();
+      $data['layout'] = 'unit/Laporan';
+      $data['judul'] = 'Data Timesheet';
+      $this->load->view('template', $data);
+    }
   }
 }
 

@@ -26,37 +26,29 @@ class Timesheet_model extends CI_Model
 
   public function ambil()
   {
-
-    $currentYear = date('Y');
+    $endDate = date('Y-m-d');
+    $startDate = date('Y-m-d', strtotime('-360 days'));
     $this->db->select('*');
     $this->db->from('timesheet');
     $this->db->join('karyawan', 'timesheet.id_karyawan = karyawan.id_karyawan', 'left');
     $this->db->join('unit', 'unit.id_unit = timesheet.id_unit', 'left');
-    $this->db->where("YEAR(tanggal) =", $currentYear);
+    $this->db->where("tanggal BETWEEN '{$startDate}' AND '{$endDate}'");
     $this->db->order_by('tanggal', 'desc');
     return $this->db->get();
   }
   public function ditolak()
   {
-
-    $currentYear = date('Y');
+    $endDate = date('Y-m-d');
+    $startDate = date('Y-m-d', strtotime('-360 days'));
     $this->db->select('*');
     $this->db->from('timesheet');
     $this->db->join('karyawan', 'timesheet.id_karyawan = karyawan.id_karyawan', 'left');
     $this->db->join('unit', 'unit.id_unit = timesheet.id_unit', 'left');
-    $this->db->where("YEAR(tanggal) =", $currentYear);
+    $this->db->where('tanggal >=', $startDate);
+    $this->db->where('tanggal <=', $endDate);
     $this->db->where('timesheet.konfirmasi', 'DITOLAK');
     $this->db->order_by('tanggal', 'desc');
     return $this->db->get();
-  }
-  public function sumharga($id)
-  {
-    $this->db->from('timesheet, unit');
-    $this->db->select('sum(unit.harga*(timesheet.hm_akhir-timesheet.hm_awal))', FALSE);
-    $this->db->where('unit.id_unit=', $id);
-    $this->db->where('timesheet.id_unit=', $id);
-    $query = $this->db->get('');
-    return ($query);
   }
   public function tambah($data)
   {
@@ -79,15 +71,6 @@ class Timesheet_model extends CI_Model
     $this->db->select('*');
     $this->db->from('karyawan');
     return $this->db->get('');
-  }
-  public function sumjam($id)
-  {
-    $this->db->from('timesheet, karyawan');
-    $this->db->select('sum(timesheet.hm_akhir-timesheet.hm_awal)', FALSE);
-    $this->db->where('karyawan.id_karyawan=', $id);
-    $this->db->where('timesheet.id_karyawan=', $id);
-    $query = $this->db->get('');
-    return ($query);
   }
   public function ubah_data($id, $data)
   {

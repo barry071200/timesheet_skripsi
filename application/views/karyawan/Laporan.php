@@ -35,7 +35,7 @@
                     <th>HM AWAL</th>
                     <th>HM AKHIR</th>
                     <th>JAM HARIAN</th>
-                    <th>PREMI</th>
+                    <th class="text-center" style="width: 9%;">PREMI</th>
                     <th>PREMI HARIAN</th>
                     <th>KETERANGAN</th>
                     <th>KONFIRMASI</th>
@@ -52,8 +52,26 @@
                         <td><?php echo $dt['hm_awal']; ?></td>
                         <td><?php echo $dt['hm_akhir']; ?></td>
                         <td class="jam-kerja"><?php echo $dt['hm_akhir'] - $dt['hm_awal']; ?></td>
-                        <td>Rp <?php echo number_format($dt['premi'], 0, ',', '.'); ?></td>
-                        <td class="total-Premi">Rp <?php echo number_format($dt['premi'] * ($dt['hm_akhir'] - $dt['hm_awal']), 0, ',', '.'); ?></td>
+                        <td>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                                <div style="text-align: right;">
+                                    Rp
+                                </div>
+                                <div style="text-align: right;">
+                                    <?php echo number_format($dt['premi'], 0, ',', '.'); ?>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                                <div style="text-align: right;">
+                                    Rp
+                                </div>
+                                <div style="text-align: right;">
+                                    <?php echo number_format($dt['premi'] * ($dt['hm_akhir'] - $dt['hm_awal']), 0, ',', '.'); ?>
+                                </div>
+                            </div>
+                        </td>
                         <td><?php echo $dt['keterangan']; ?></td>
                         <td class="konfirmasi-column">
                             <?php if ($dt['konfirmasi'] === 'DITERIMA') : ?>

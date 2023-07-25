@@ -42,12 +42,13 @@ class Login extends CI_Controller
     if ($status == true) {
       $username = $this->input->post('username');
       $this->session->set_userdata('username', $username);
-
       $data = $status->row_array();
+      $id_user = $data['id_user'];
       $username = $data['username'];
       $pw = $data['password'];
       $role = $data['role'];
       $setdata = array(
+        'id_user' => $id_user,
         'username' => $username,
         'password' => $pw,
         'role' => $role,
@@ -55,6 +56,10 @@ class Login extends CI_Controller
 
       );
       $this->session->set_userdata($setdata);
+      $this->db->query("CALL log_login($id_user)");
+      $this->db->query("CALL delete_old_karyawan_deleted()");
+      $this->db->query("CALL delete_old_timesheet_deleted()");
+      $this->db->query("CALL delete_old_unit_deleted()");
       if ($data['role'] == '1') {
         redirect('dashboard/index');
       } else {
@@ -76,6 +81,8 @@ class Login extends CI_Controller
 
   public function logout()
   {
+    $id_user = $this->session->userdata('id_user');
+    $this->db->query("CALL log_logout($id_user)");
     session_destroy();
     redirect('login/index');
   }
