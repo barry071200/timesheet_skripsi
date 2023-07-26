@@ -108,7 +108,7 @@
                     </td>
                     <td><?php echo $dt['deleted_at']; ?></td>
                     <td class="action-column">
-                        <a class="btn btn-warning" data-toggle="modal" data-target="#ubahtimesheet<?php echo $dt['id_karyawan']; ?>">Restore</a>
+                        <a class="btn btn-warning" href="<?php echo site_url("deleted/restore_timesheet") . "/" . $dt['id']; ?>">Restore</a>
                     </td>
                 </tr>
             <?php endforeach ?>

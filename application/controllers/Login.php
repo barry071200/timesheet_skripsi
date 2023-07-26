@@ -30,7 +30,6 @@ class Login extends CI_Controller
   {
     $this->load->view('login');
   }
-
   public function cek()
   {
     $this->load->model('login_model');
@@ -45,40 +44,24 @@ class Login extends CI_Controller
       $data = $status->row_array();
       $id_user = $data['id_user'];
       $username = $data['username'];
-      $pw = $data['password'];
       $role = $data['role'];
       $setdata = array(
         'id_user' => $id_user,
         'username' => $username,
-        'password' => $pw,
         'role' => $role,
         'logged_in' => TRUE
-
       );
       $this->session->set_userdata($setdata);
       $this->db->query("CALL log_login($id_user)");
       $this->db->query("CALL delete_old_karyawan_deleted()");
       $this->db->query("CALL delete_old_timesheet_deleted()");
       $this->db->query("CALL delete_old_unit_deleted()");
-      if ($data['role'] == '1') {
-        redirect('dashboard/index');
-      } else {
-        if ($data['role'] == '2') {
-          redirect('dashboard/index');
-        } elseif ($data['role'] == '3') {
-          redirect('dashboard/index');
-        } elseif ($data['role'] == '4') {
-          redirect('dashboard/index');
-        } elseif ($data['role'] == '5') {
-          redirect('dashboard/index');
-        }
-      }
+      redirect('dashboard/index');
     } else {
       $this->session->set_flashdata('error', 'Username atau Password Salah!!');
       redirect('login/index');
     }
   }
-
   public function logout()
   {
     $id_user = $this->session->userdata('id_user');

@@ -94,7 +94,7 @@
                     <td><?php echo $dt['deleted_at']; ?></td>
                     <?php if ($this->session->userdata('role') == '1') { ?>
                         <td class="action-column text-center align-middle">
-                            <a class="btn btn-warning" data-toggle="modal" data-target="#ubahunit<?php echo $dt['nama_unit']; ?>">Restore</a>
+                            <a class="btn btn-warning" href="<?php echo site_url("deleted/restore_unit") . "/" . $dt['id_unit']; ?>">Restore</a>
                         </td>
                     <?php } ?>
                 </tr>

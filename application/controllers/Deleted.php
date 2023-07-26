@@ -19,6 +19,13 @@ class Deleted extends CI_Controller
             redirect('login/index');
         }
     }
+    public function restore_timesheet($restored_id)
+    {
+        $sql = "CALL restore_timesheet(?)";
+        $this->db->query($sql, array($restored_id));
+        $this->session->set_flashdata('admin_save_success', 'Restore berhasil');
+        redirect('deleted/timesheet');
+    }
     public function karyawan()
     {
         if ($this->session->userdata('role') == '1') {
@@ -31,6 +38,13 @@ class Deleted extends CI_Controller
             redirect('login/index');
         }
     }
+    public function restore_karyawan($restored_id)
+    {
+        $sql = "CALL restore_karyawan(?)";
+        $this->db->query($sql, array($restored_id));
+        $this->session->set_flashdata('admin_save_success', 'Restore berhasil');
+        redirect('deleted/karyawan');
+    }
     public function unit()
     {
         if ($this->session->userdata('role') == '1') {
@@ -42,5 +56,12 @@ class Deleted extends CI_Controller
             session_destroy();
             redirect('login/index');
         }
+    }
+    public function restore_unit($restored_id)
+    {
+        $sql = "CALL restore_unit(?)";
+        $this->db->query($sql, array($restored_id));
+        $this->session->set_flashdata('admin_save_success', 'Restore berhasil');
+        redirect('deleted/unit');
     }
 }

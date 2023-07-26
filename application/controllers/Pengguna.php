@@ -70,7 +70,6 @@ class Pengguna extends CI_Controller
             redirect('login/index');
         }
     }
-
     public function delete($id)
     {
         if ($this->session->userdata('role') == '1') {
