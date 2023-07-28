@@ -175,7 +175,7 @@
                                 <label for="id_karyawan">ID Karyawan</label>
                                 <input type="text" required class="form-control" id="id_karyawan" name="id_karyawan" value="<?php echo $dt['id_karyawan']; ?>" readonly>
                                 <label for="nama_karyawan">Nama Lengkap</label>
-                                <input type="text" required class="form-control" id="nama_karyawan" name="nama_karyawan" value="<?php echo $dt['nama_karyawan']; ?>">
+                                <input type="text" required class="form-control" id="nama_karyawan" name="nama_karyawan" value="<?php echo $dt['nama_karyawan']; ?>" onchange="checkDuplicateName()">
                                 <label for="alamat">Alamat</label>
                                 <input type="text" required class="form-control" id="alamat" name="alamat" value="<?php echo $dt['alamat']; ?>">
                                 <label for="no_telpon">Nomor Telpon</label>

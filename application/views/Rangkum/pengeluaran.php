@@ -60,7 +60,7 @@
         </thead>
         <tbody>
             <?php $no = 1;
-            foreach ($rangkum as $dt) : ?>
+            foreach ($pengeluaran as $dt) : ?>
                 <tr>
                     <td class="action-column"><?php echo $no++; ?></td>
                     <td><?php echo $dt['tahun']; ?></td>

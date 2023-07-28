@@ -1,4 +1,7 @@
+
+
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 
@@ -35,16 +38,14 @@ class Login extends CI_Controller
     $this->load->model('login_model');
     $post = $this->input->post();
     $username = $post['username'];
-    $pw = $post['password'];
+    $password = $post['password'];
 
-    $status = $this->login_model->cek($username, $pw);
-    if ($status == true) {
-      $username = $this->input->post('username');
+    $status = $this->login_model->cek($username, $password);
+    if ($status !== FALSE) {
+      $username = $status->username;
       $this->session->set_userdata('username', $username);
-      $data = $status->row_array();
-      $id_user = $data['id_user'];
-      $username = $data['username'];
-      $role = $data['role'];
+      $id_user = $status->id_user;
+      $role = $status->role;
       $setdata = array(
         'id_user' => $id_user,
         'username' => $username,
@@ -56,17 +57,24 @@ class Login extends CI_Controller
       $this->db->query("CALL delete_old_karyawan_deleted()");
       $this->db->query("CALL delete_old_timesheet_deleted()");
       $this->db->query("CALL delete_old_unit_deleted()");
+      $this->db->query("CALL delete_old_user_sessions()");
       redirect('dashboard/index');
     } else {
       $this->session->set_flashdata('error', 'Username atau Password Salah!!');
       redirect('login/index');
     }
   }
+
+
+
+
   public function logout()
   {
     $id_user = $this->session->userdata('id_user');
-    $this->db->query("CALL log_logout($id_user)");
-    session_destroy();
+    if ($id_user !== NULL) {
+      $this->db->query("CALL log_logout($id_user)");
+    }
+    $this->session->sess_destroy();
     redirect('login/index');
   }
 }

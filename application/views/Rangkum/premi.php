@@ -65,7 +65,7 @@
         </thead>
         <tbody>
             <?php $no = 1;
-            foreach ($rangkum3 as $dt) : ?>
+            foreach ($premi as $dt) : ?>
                 <tr>
                     <td><?php echo $no++; ?></td>
                     <td><?php echo $dt['tahun']; ?></td>
@@ -95,7 +95,7 @@
 
     <?php
     $no = 1;
-    foreach ($rangkum3 as $dt) :
+    foreach ($premi as $dt) :
         $id = "detil-" . str_replace(' ', '_', $dt['tahun']) . '-' . str_replace(' ', '_', $dt['bulan']) . '-' . str_replace(' ', '_', $dt['nama_karyawan']);
         //var_dump($id);
     ?>

@@ -87,7 +87,9 @@ class Pengguna extends CI_Controller
             $id = $post['id_user'];
             $data['id_user'] = $post['id_user'];
             $data['username'] = $post['username'];
-            $data['password'] = $post['password'];
+            $password = $post['password'];
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+            $data['password'] = $hashedPassword;
             $data['role'] = $post['role'];
             $this->pengguna_model->ubah_data($id, $data);
             $this->session->set_flashdata('admin_save_success', 'Update berhasil');

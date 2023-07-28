@@ -195,7 +195,7 @@
                                 <label for="id_unit">ID Unit</label>
                                 <input type="text" required class="form-control" id="id_unit" name="id_unit" value="<?php echo $dt['id_unit']; ?>" readonly>
                                 <label for="nama_unit">Nama Unit</label>
-                                <input type="text" required class="form-control" id="nama_unit" name="nama_unit" value="<?php echo $dt['nama_unit']; ?>">
+                                <input type="text" required class="form-control" id="nama_unit" name="nama_unit" value="<?php echo $dt['nama_unit']; ?>" onchange="checkDuplicateName()">
                                 <label for="perusahaan">Perusahaan</label>
                                 <input type="text" required class="form-control" id="perusahaan" name="perusahaan" value="<?php echo $dt['perusahaan']; ?>">
                                 <label for="tahun">Tahun</label>

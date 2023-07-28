@@ -13,7 +13,11 @@ class Deleted_model extends CI_Model
     }
     public function get_deleted_timesheet()
     {
-        $query = $this->db->get('timesheet_deleted');
-        return $query->result_array();
+        $this->db->select('*');
+        $this->db->from('timesheet_deleted');
+        $this->db->join('karyawan', 'timesheet_deleted.id_karyawan = karyawan.id_karyawan', 'left');
+        $this->db->join('unit', 'unit.id_unit = timesheet_deleted.id_unit', 'left');
+        $this->db->order_by('deleted_at', 'desc');
+        return $this->db->get();
     }
 }

@@ -84,8 +84,8 @@
             foreach ($deleted_timesheet as $dt) : ?>
                 <tr>
                     <td class="action-column"><?php echo $no++; ?></td>
-                    <td><?php echo $dt['id_karyawan']; ?></td>
-                    <td><?php echo $dt['id_unit']; ?></td>
+                    <td><?php echo $dt['nama_karyawan']; ?></td>
+                    <td><?php echo $dt['nama_unit']; ?></td>
                     <td><?php echo $dt['tanggal']; ?></td>
                     <td><?php echo $dt['hm_awal']; ?></td>
                     <td><?php echo $dt['hm_akhir']; ?></td>

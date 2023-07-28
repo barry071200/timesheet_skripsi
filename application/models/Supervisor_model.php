@@ -49,12 +49,17 @@ class Supervisor_model extends CI_Model
     }
     public function kosong()
     {
+        $today = date('Y-m-d');
+        $range_start = date('Y-m-d', strtotime('-360 days', strtotime($today)));
         $this->db->select('*');
-        $this->db->from('timesheet, unit');
-        $this->db->join('karyawan', 'timesheet.id_karyawan = karyawan.id_karyawan AND unit.id_unit = timesheet.id_unit');
+        $this->db->from('timesheet');
+        $this->db->join('unit', 'unit.id_unit = timesheet.id_unit');
+        $this->db->join('karyawan', 'karyawan.id_karyawan = timesheet.id_karyawan');
         $this->db->where('timesheet.konfirmasi', '');
-        $this->db->order_by('tanggal', 'desc');
-        return $this->db->get('');
+        $this->db->where('timesheet.tanggal >=', $range_start);
+        $this->db->where('timesheet.tanggal <=', $today);
+        $this->db->order_by('timesheet.tanggal', 'desc');
+        return $this->db->get();
     }
 
     public function valid($id, $valid)

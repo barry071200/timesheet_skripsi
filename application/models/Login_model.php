@@ -30,18 +30,29 @@ class Login_model extends CI_Model
 
 
   // ------------------------------------------------------------------------
-  public function cek($username, $pw)
+  // public function cek($username, $pw)
+  // {
+  //   $this->db->select('*');
+  //   $this->db->where('username', $username);
+  //   $this->db->where('password', $pw);
+  //   $this->db->from('users');
+  //   $query = $this->db->get();
+  //   if ($query->num_rows() > 0) {
+  //     return $query;
+  //   } else {
+  //     return FALSE;
+  //   }
+  // }
+  function cek($username, $password)
   {
-    $this->db->select('*');
-    $this->db->where('username', $username);
-    $this->db->where('password', $pw);
-    $this->db->from('users');
-    $query = $this->db->get();
+    $query = $this->db->get_where('users', array('username' => $username));
     if ($query->num_rows() > 0) {
-      return $query;
-    } else {
-      return FALSE;
+      $data_user = $query->row();
+      if (password_verify($password, $data_user->password)) {
+        return $data_user; // Kembalikan data user jika password cocok
+      }
     }
+    return FALSE; // Password salah atau pengguna tidak ditemukan
   }
 }
 

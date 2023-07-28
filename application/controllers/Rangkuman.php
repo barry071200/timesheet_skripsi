@@ -6,7 +6,7 @@ class Rangkuman extends CI_Controller
     public function index()
     {
         if ($this->session->userdata('role') == '2') {
-            $rangkum = $this->db->query("SELECT DATE_FORMAT(tanggal, '%M') AS bulan,
+            $pengeluaran = $this->db->query("SELECT DATE_FORMAT(tanggal, '%M') AS bulan,
                                         YEAR(tanggal) AS tahun,
                                         SUM((ts.hm_akhir - ts.hm_awal) * u.harga) AS total_harga,
                                         SUM((ts.hm_akhir - ts.hm_awal) * k.premi) AS total_premi,
@@ -17,9 +17,9 @@ class Rangkuman extends CI_Controller
                                         WHERE YEAR(tanggal) BETWEEN 2018 AND YEAR(CURDATE())
                                         GROUP BY YEAR(tanggal), MONTH(tanggal)
                                         ORDER BY YEAR(tanggal) DESC, MONTH(tanggal) DESC");
-            $data['rangkum'] = $rangkum->result_array();
+            $data['pengeluaran'] = $pengeluaran->result_array();
             $data['judul'] = "Laporan Biaya Pengeluaran";
-            $data['layout'] = "Rangkum/index";
+            $data['layout'] = "Rangkum/pengeluaran";
             $this->load->view('template', $data);
         } else {
             session_destroy();
@@ -29,7 +29,7 @@ class Rangkuman extends CI_Controller
     public function index2()
     {
         if ($this->session->userdata('role') == '2' or $this->session->userdata('role') == '4') {
-            $rangkum = $this->db->query("SELECT DATE_FORMAT(tanggal, '%M') AS bulan,
+            $sewa = $this->db->query("SELECT DATE_FORMAT(tanggal, '%M') AS bulan,
                                         YEAR(tanggal) AS tahun, u.perusahaan,
                                         SUM((ts.hm_akhir - ts.hm_awal) * u.harga) AS total_harga,
                                         SUM(ts.hm_akhir - ts.hm_awal) AS total_jam_kerja
@@ -37,7 +37,7 @@ class Rangkuman extends CI_Controller
                                         JOIN unit u ON ts.id_unit = u.id_unit
                                         WHERE YEAR(tanggal) BETWEEN 2018 AND YEAR(CURDATE())
                                         GROUP BY YEAR(tanggal) desc, MONTH(tanggal) desc, u.perusahaan");
-            $data['rangkum2'] = $rangkum->result_array();
+            $data['sewa'] = $sewa->result_array();
             $detil = $this->db->query("SELECT
                                         DATE_FORMAT(tanggal, '%M') AS bulan,
                                         YEAR(tanggal) AS tahun, u.nama_unit, u.perusahaan, u.harga,
@@ -50,7 +50,7 @@ class Rangkuman extends CI_Controller
                                         ORDER BY YEAR(tanggal) DESC, MONTH(tanggal) DESC");
             $data['detil'] = $detil->result_array();
             $data['judul'] = "Laporan Biaya Sewa";
-            $data['layout'] = "Rangkum/laporan";
+            $data['layout'] = "Rangkum/sewa";
             $this->load->view('template', $data);
         } else {
             session_destroy();
@@ -60,7 +60,7 @@ class Rangkuman extends CI_Controller
     public function index3()
     {
         if ($this->session->userdata('role') == '4') {
-            $rangkum = $this->db->query("SELECT DATE_FORMAT(tanggal, '%M') AS bulan, 
+            $premi = $this->db->query("SELECT DATE_FORMAT(tanggal, '%M') AS bulan, 
                                         YEAR(tanggal) AS tahun, k.nama_karyawan,
                                         SUM((ts.hm_akhir - ts.hm_awal) * k.premi) AS total_harga,
                                         SUM(ts.hm_akhir - ts.hm_awal) AS total_jam_kerja
@@ -68,7 +68,7 @@ class Rangkuman extends CI_Controller
                                         JOIN karyawan k ON ts.id_karyawan = k.id_karyawan
                                         WHERE YEAR(tanggal) BETWEEN 2018 AND YEAR(CURDATE())
                                         GROUP BY YEAR(tanggal) desc, MONTH(tanggal) desc, k.nama_karyawan");
-            $data['rangkum3'] = $rangkum->result_array();
+            $data['premi'] = $premi->result_array();
             $detil = $this->db->query("SELECT
             tanggal,
             u.nama_unit,
@@ -88,7 +88,7 @@ class Rangkuman extends CI_Controller
             tanggal;");
             $data['detil'] = $detil->result_array();
             $data['judul'] = "Laporan Premi Bulanan";
-            $data['layout'] = "Rangkum/laporan2";
+            $data['layout'] = "Rangkum/premi";
             $this->load->view('template', $data);
         } else {
             session_destroy();

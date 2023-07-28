@@ -4,7 +4,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
 
 
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,7 +39,6 @@
                 </script>
             <?php endif; ?>
             <div class="card-body">
-
                 <form method="post" action="<?php echo site_url("login/cek") ?>">
                     <div class="input-group mb-3">
                         <input id="username" name="username" type="text" class="form-control" required placeholder="Username">

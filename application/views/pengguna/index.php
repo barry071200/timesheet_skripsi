@@ -150,7 +150,7 @@
                     <div class="form-group">
                         <form method="post" action="<?php echo site_url("pengguna/tambah") ?>">
                             <label for="username">Username</label>
-                            <input type="text" required class="form-control" id="username" name="username" placeholder="Masukan Username">
+                            <input type="text" required class="form-control" id="username" name="username" placeholder="Masukan Username" onchange="checkDuplicateName()">
                             <label for="password">Password</label>
                             <input type="password" required class="form-control" rows="3" id="password" name="password" placeholder="Masukan Password"></input>
                             <label for="role">Role</label>
@@ -187,9 +187,14 @@
                                 <label for="id_user">ID user</label>
                                 <input type="text" required class="form-control" id="id_user" name="id_user" value="<?php echo $dt['id_user']; ?>" readonly>
                                 <label for="username">Username</label>
-                                <input type="text" required class="form-control" id="username" name="username" value="<?php echo $dt['username']; ?>">
+                                <input type="text" required class="form-control" id="username" name="username" value="<?php echo $dt['username']; ?>" onchange="checkDuplicateName()">
+                                <!-- Tambahkan logika berikut -->
                                 <label for="password">Password</label>
-                                <input type="password" required class="form-control" id="password" name="password" value="<?php echo $dt['password']; ?>">
+                                <input type="password" <?php echo (empty($dt['password'])) ? 'disabled' : 'required'; ?> class="form-control" id="password" name="password" value="">
+                                <?php if (empty($dt['password'])) : ?>
+                                    <small class="form-text text-muted">Kosongkan jika tidak ingin mengganti password.</small>
+                                <?php endif; ?>
+                                <!-- Akhir logika -->
                                 <label for="role">Role</label>
                                 <select required class="form-control" id="role" name="role">
                                     <option value="1" <?php if ($dt['role'] == '1') echo 'selected'; ?>>Super Admin</option>
@@ -211,6 +216,7 @@
             </div>
         </div>
     <?php endforeach ?>
+
 </div>
 <script>
     var table = $('#example1').DataTable();
@@ -223,4 +229,21 @@
 
     table.buttons().container()
         .appendTo($('.col-sm-6:eq(0)', table.table().container()));
+</script>
+<script>
+    function checkDuplicateName() {
+        var nameInput = document.getElementById("username").value;
+        var existingNames = <?php echo json_encode(array_column($user, 'username')); ?>;
+
+        if (existingNames.includes(nameInput)) {
+            event.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Username sudah terdaptar dalam sistem ganti dengan username lain!!!',
+            });
+            document.getElementById("nama_unit").value = "";
+        }
+
+    }
 </script>

@@ -10,8 +10,8 @@ class Deleted extends CI_Controller
     public function timesheet()
     {
         if ($this->session->userdata('role') == '1') {
-            $data['deleted_timesheet'] = $this->Deleted_model->get_deleted_timesheet();
-            $data['judul'] = "Data Timesheet";
+            $data['deleted_timesheet'] = $this->Deleted_model->get_deleted_timesheet()->result_array();
+            $data['judul'] = "Data Timesheet Deleted";
             $data['layout'] = "deleted/timesheet";
             $this->load->view('template', $data);
         } else {

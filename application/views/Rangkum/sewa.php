@@ -65,7 +65,7 @@
         <tbody>
             <?php
             $no = 1;
-            foreach ($rangkum2 as $dt) : ?>
+            foreach ($sewa as $dt) : ?>
                 <tr>
                     <td class="opsi-column"><?php echo $no++; ?></td>
                     <td><?php echo $dt['tahun']; ?></td>
@@ -95,7 +95,7 @@
 
     <?php
     $no = 1;
-    foreach ($rangkum2 as $dt) : ?>
+    foreach ($sewa as $dt) : ?>
         <?php
         $id = "detil-" . str_replace(' ', '_', $dt['tahun']) . '-' . str_replace(' ', '_', $dt['bulan']) . '-' . str_replace(' ', '_', $dt['perusahaan']);
         // var_dump($id);
