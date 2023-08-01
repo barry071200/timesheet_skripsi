@@ -106,7 +106,7 @@
                         <?php
                         $nama_karyawan = str_replace('_', ' ', $dt['nama_karyawan']);
                         ?>
-                        <h5 class="modal-title" id="exampleModalLabel">Detail Data Sewa - <?php echo $nama_karyawan . ' ' . $dt['bulan'] . ' ' . $dt['tahun']; ?></h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Detail Data Premi - <?php echo $nama_karyawan . ' ' . $dt['bulan'] . ' ' . $dt['tahun']; ?></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -143,8 +143,26 @@
                                             <td><?php echo $detil_nama_karyawan; ?></td>
                                             <td><?php echo $d['nama_unit']; ?></td>
                                             <td><?php echo $d['total_jam_kerja']; ?> Jam</td>
-                                            <td><?php echo $d['premi']; ?></td>
-                                            <td>Rp <?php echo number_format($d['total_premi'], 0, ',', '.'); ?></td>
+                                            <td>
+                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                                                    <div style="text-align: right;">
+                                                        Rp
+                                                    </div>
+                                                    <div style="text-align: right;">
+                                                        <?php echo number_format($d['premi'], 0, ',', '.'); ?>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                                                    <div style="text-align: right;">
+                                                        Rp
+                                                    </div>
+                                                    <div style="text-align: right;">
+                                                        <?php echo number_format($d['total_premi'], 0, ',', '.'); ?>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                 <?php
                                     endif;
@@ -159,7 +177,16 @@
                                     <th></th>
                                     <th><?php echo $totalJamKerja; ?> Jam</th>
                                     <th></th>
-                                    <th>Rp <?php echo number_format($totalPremi, 0, ',', '.'); ?></th>
+                                    <th>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                                            <div style="text-align: right;">
+                                                Rp
+                                            </div>
+                                            <div style="text-align: right;">
+                                                <?php echo number_format($totalPremi, 0, ',', '.'); ?>
+                                            </div>
+                                        </div>
+                                    </th>
                                 </tr>
                             </tfoot>
                         </table>

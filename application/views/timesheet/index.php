@@ -137,7 +137,7 @@
                 <th>JAM KERJA</th>
                 <th>KETERANGAN</th>
                 <th>KONFIRMASI</th>
-                <th class="action-column">ACTION</th>
+                <th class="action-column text-center">ACTION</th>
             </tr>
         </thead>
         <tbody>

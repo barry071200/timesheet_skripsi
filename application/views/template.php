@@ -124,7 +124,7 @@
                 </a>
               </li>
             <?php } ?>
-            <?php if ($this->session->userdata('role') == '2' or  $this->session->userdata('role') == '4') { ?>
+            <?php if ($this->session->userdata('role') == '2') { ?>
               <li class="nav-item">
                 <a href="<?php echo site_url('Rangkuman/index2') ?>" class="nav-link">
                   <i class="bi bi-cash"></i>
@@ -255,7 +255,7 @@
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?php echo site_url('dashboard') ?>">Dashboard</a></li>
                 <li class="breadcrumb-item active"><?php echo $judul; ?></li>
               </ol>
             </div>
