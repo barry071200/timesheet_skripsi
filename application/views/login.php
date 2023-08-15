@@ -2,7 +2,9 @@
 <html lang="en">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="<?= base_url('assets/path_to_sweetalert/sweetalert2.min.css') ?>">
+<script src="<?= base_url('assets/path_to_sweetalert/sweetalert2.min.js') ?>"></script>
 
 <head>
     <meta charset="utf-8">
@@ -38,6 +40,23 @@
                     }, 3000);
                 </script>
             <?php endif; ?>
+
+            <?php
+            if (!empty($this->session->flashdata('success_message'))) {
+                echo '
+    <script>
+        Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "' . $this->session->flashdata('success_message') . '",
+            showConfirmButton: false,
+            timer: 3000
+        });
+    </script>';
+            }
+            ?>
+
+
             <div class="card-body">
                 <form method="post" action="<?php echo site_url("login/cek") ?>">
                     <div class="input-group mb-3">

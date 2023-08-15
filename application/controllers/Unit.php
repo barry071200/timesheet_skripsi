@@ -67,6 +67,7 @@ class Unit extends CI_Controller
     if ($this->session->userdata('role') == '4') {
       $this->load->model('Unit_model');
       $this->Unit_model->hapus_data($id);
+      $this->session->set_flashdata('admin_hapus_success', 'Hapus berhasil');
       redirect('unit/index');
     }
   }

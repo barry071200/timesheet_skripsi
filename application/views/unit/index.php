@@ -51,9 +51,7 @@
 
 
     <script>
-        // Saat halaman dimuat
         window.addEventListener('DOMContentLoaded', function() {
-            // Menghapus flash data dengan AJAX
             fetch('<?php echo base_url('timesheet/clear_flash_data'); ?>', {
                 method: 'POST'
             });
@@ -84,7 +82,7 @@
                 <th>Nama Unit</th>
                 <th>Perusahaan</th>
                 <th>Tahun</th>
-                <th class="text-center" style="width: 8%;">Harga/Jam</th>
+                <th class="text-center" style="width: 10%;">Harga/Jam</th>
                 <?php if ($this->session->userdata('role') == '4' or $this->session->userdata('role') == '1') { ?><th class="action-column text-center">Action</th><?php } ?>
                 <?php if ($this->session->userdata('role') != '4') { ?><th class="sheet-column text-center">TIMESHEET</th><?php } ?>
 
@@ -173,7 +171,6 @@
     </div>
 
     <script>
-        // Validasi input tahun agar hanya menerima angka dan panjang maksimal 4 karakter
         var tahunInputTambah = document.getElementById('tahun');
         tahunInputTambah.addEventListener('input', function() {
             this.value = this.value.replace(/\D/g, '').slice(0, 4);
@@ -209,9 +206,7 @@
                         </div>
                         </form>
                     </div>
-
                     <script>
-                        // Menggunakan JavaScript untuk membatasi input tahun hanya angka dengan batas 4 karakter
                         var tahunInputUbah<?php echo $dt['id_unit']; ?> = document.getElementById('tahun-<?php echo $dt['id_unit']; ?>');
                         tahunInputUbah<?php echo $dt['id_unit']; ?>.addEventListener('input', function() {
                             this.value = this.value.replace(/\D/g, '').slice(0, 4);
@@ -258,10 +253,10 @@
             actionColumn[i].style.display = "none";
         }
         var rows = table.rows;
-        for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the header row
+        for (var i = 1; i < rows.length; i++) {
             var row = rows[i];
             var noCell = document.createElement('td');
-            noCell.textContent = i; // Number starts from 1
+            noCell.textContent = i;
             row.insertBefore(noCell, row.firstElementChild);
         }
         var tableData = table.outerHTML;

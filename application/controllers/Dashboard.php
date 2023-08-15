@@ -77,6 +77,8 @@ class Dashboard extends CI_Controller
       $data['judul'] = "Dashboard";
       $data['layout'] = "dashboard";
       $this->load->view('template', $data);
+    } else {
+      redirect('login/index');
     }
   }
 }

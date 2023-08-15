@@ -67,7 +67,7 @@
             <?php $no = 1;
             foreach ($premi as $dt) : ?>
                 <tr>
-                    <td><?php echo $no++; ?></td>
+                    <td class="opsi-column"><?php echo $no++; ?></td>
                     <td><?php echo $dt['tahun']; ?></td>
                     <td><?php echo $dt['bulan']; ?></td>
                     <td><?php echo $dt['nama_karyawan']; ?></td>
@@ -84,7 +84,7 @@
                     </td>
                     <td class="opsi-column text-center align-middle">
                         <?php
-                        $target = "#detil-" . str_replace(' ', '_', $dt['tahun']) . '-' . str_replace(' ', '_', $dt['bulan']) . '-' . str_replace(' ', '_', $dt['nama_karyawan']);
+                        $target = "#detil-" . $dt['tahun'] .  $dt['bulan'] . str_replace(' ', '_', $dt['nama_karyawan']);
                         ?>
                         <button class="btn btn-info btn-icon" data-toggle="modal" data-target="<?php echo $target; ?>">Detail</button>
                     </td>
@@ -96,7 +96,7 @@
     <?php
     $no = 1;
     foreach ($premi as $dt) :
-        $id = "detil-" . str_replace(' ', '_', $dt['tahun']) . '-' . str_replace(' ', '_', $dt['bulan']) . '-' . str_replace(' ', '_', $dt['nama_karyawan']);
+        $id = "detil-" .  $dt['tahun'] . $dt['bulan'] . str_replace(' ', '_', $dt['nama_karyawan']);
         //var_dump($id);
     ?>
         <div class="modal fade modal-custom" id="<?php echo $id; ?>" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -112,7 +112,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <table id="modalTable-<?php echo str_replace(' ', '_', $dt['tahun']) . '-' . str_replace(' ', '_', $dt['bulan']); ?>" class="table table-striped">
+                        <table id="modalTable-<?php echo $dt['tahun'] .  $dt['bulan']; ?>" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>NO</th>
@@ -233,11 +233,45 @@
         for (var i = 0; i < actionColumn.length; i++) {
             actionColumn[i].style.display = "none";
         }
-
-        // Menghitung total jam kerja dan total harga
+        var rows = table.rows;
+        for (var i = 1; i < rows.length; i++) {
+            var row = rows[i];
+            var noCell = document.createElement('td');
+            noCell.textContent = i;
+            row.insertBefore(noCell, row.firstElementChild);
+        }
         for (var i = 1; i < table.rows.length; i++) {
-            totalJamKerja += parseFloat(table.rows[i].cells[4].textContent);
-            totalHarga += parseInt(table.rows[i].cells[5].textContent.replace(/\D/g, ''));
+            totalJamKerja += parseFloat(table.rows[i].cells[5].textContent);
+            totalHarga += parseInt(table.rows[i].cells[6].textContent.replace(/\D/g, ''));
+        }
+
+        var tableData = table.outerHTML;
+
+        var printPreview = document.createElement('div');
+        printPreview.innerHTML = '<style>body { font-size: 12px; }</style>' +
+            '<div class="d-flex justify-content-between">' +
+            '<h1>PT Bumi Barito Minieral</h1>' +
+            '<h1 class="text-right">Laporan Biaya Sewa Bulanan</h1>' +
+            '</div>' +
+            '<table>' + tableData + '</table>' +
+            '<div>Total Jam Kerja: ' + totalJamKerja + ' Jam</div>' +
+            '<div>Total Pembayaran: Rp ' + totalHarga.toLocaleString() + '</div>';
+        document.body.innerHTML = printPreview.innerHTML;
+        window.print();
+        location.reload();
+    }
+
+    function slipData() {
+        var table = document.getElementById('example1');
+        var totalJamKerja = 0;
+        var totalHarga = 0;
+        var actionColumn = table.querySelectorAll(".opsi-column");
+        for (var i = 0; i < actionColumn.length; i++) {
+            actionColumn[i].style.display = "none";
+        }
+        for (var i = 1; i < table.rows.length; i++) {
+            totalJamKerja += parseFloat(table.rows[i].cells[5].textContent);
+            totalHarga += parseInt(table.rows[i].cells[6].textContent.replace(/\D/g, ''));
         }
 
         var tableData = table.outerHTML;

@@ -49,63 +49,79 @@
         </script>
     <?php endif; ?>
     <script>
-        // Saat halaman dimuat
         window.addEventListener('DOMContentLoaded', function() {
-            // Dapatkan tombol Save
             var saveButton = document.querySelector('.btn-save');
-
-            // Tambahkan event listener pada tombol Save
             saveButton.addEventListener('click', function(event) {
-                event.preventDefault(); // Menghentikan aksi default dari tombol Save
+                event.preventDefault();
 
-                // Tampilkan konfirmasi Sweet Alert untuk update data
-                Swal.fire({
-                    title: "Konfirmasi",
-                    text: "Apakah Anda yakin ingin mengubah username dan password?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    confirmButtonText: "Ya, Ubah!",
-                    cancelButtonText: "Batal"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Submit the form after the update confirmation
-                        document.getElementById('updateForm').submit();
-                    }
-                });
+                var newPassword = document.querySelector('[name="password"]').value;
+                var confirmPassword = document.querySelector('[name="confirm_password"]').value;
+
+                if (newPassword.length < 5) {
+                    Swal.fire({
+                        title: "Kesalahan",
+                        text: "Password harus memiliki minimal 5 karakter.",
+                        icon: "error",
+                    });
+                } else if (newPassword === confirmPassword) {
+                    Swal.fire({
+                        title: "Konfirmasi",
+                        text: "Apakah Anda yakin ingin mengubah username dan password?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        confirmButtonText: "Ya, Ubah!",
+                        cancelButtonText: "Batal"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('updateForm').submit();
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Kesalahan",
+                        text: "Password dan konfirmasi password tidak sesuai.",
+                        icon: "error",
+                    });
+                }
             });
         });
     </script>
-
-
     <div class="container container-sm">
         <div class="card card-body">
             <h1 style="text-align: center;">UBAH USERNAME & PASSWORD</h1>
             <br>
-            <?php echo validation_errors(); ?>
             <form id="updateForm" method="post" action="<?php echo site_url("user/update") ?>">
                 <div class="form-group row">
                     <label for="nama_karyawan" class="col-sm-2 col-form-label">Username :</label>
                     <div class="col-sm-10">
-                        <input type="text" required class="form-control" name="username" value="<?php echo $user['username']; ?>">
+                        <input type="text" required class="form-control" name="username" value="<?php echo $user['username']; ?>" readonly>
                     </div>
                 </div>
 
                 <div class="form-group row">
-                    <label for="alamat" class="col-sm-2 col-form-label">Password :</label>
+                    <label for="password" class="col-sm-2 col-form-label">Password :</label>
                     <div class="col-sm-10">
                         <input type="password" name="password" value="" class="form-control" placeholder="Masukan Password baru">
                     </div>
                 </div>
 
                 <div class="form-group row">
+                    <label for="confirm_password" class="col-sm-2 col-form-label">Confirm Password :</label>
+                    <div class="col-sm-10">
+                        <input type="password" name="confirm_password" value="" class="form-control" placeholder="Konfirmasi Password baru">
+                    </div>
+                </div>
+                <div class="form-group row">
                     <div class="col-sm-4 offset-sm-2">
-                        <button class="btn btn-primary btn-save" type="button">Save</button>
+                        <button class="btn btn-primary btn-save" type="submit">Save</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
+
 
 
 

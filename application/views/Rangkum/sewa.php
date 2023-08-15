@@ -50,48 +50,64 @@
         </div>
     </div>
     <br>
-    <table id="example1" class="table table-striped table-condensed">
-        <thead class="table-dark">
-            <tr>
-                <th class="text-left">NO</th>
-                <th class="text-left">Tahun</th>
-                <th class="text-left">Bulan</th>
-                <th class="text-left">Perusahaan</th>
-                <th class="text-left">Jam Kerja</th>
-                <th class="text-center" style="width: 13%;">Total Biaya Sewa</th>
-                <th class="text-center opsi-column">Opsi</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $no = 1;
-            foreach ($sewa as $dt) : ?>
+    <style>
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .table-container thead th {
+            position: sticky;
+            top: 0;
+            background-color: #343a40;
+            color: white;
+            z-index: 1;
+        }
+    </style>
+    <div class="table-container">
+        <table id="example1" class="table table-striped table-condensed">
+            <thead class="table-dark">
                 <tr>
-                    <td class="opsi-column"><?php echo $no++; ?></td>
-                    <td><?php echo $dt['tahun']; ?></td>
-                    <td><?php echo $dt['bulan']; ?></td>
-                    <td><?php echo $dt['perusahaan']; ?></td>
-                    <td><?php echo $dt['total_jam_kerja']; ?> Jam</td>
-                    <td>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
-                            <div style="text-align: right;">
-                                Rp
-                            </div>
-                            <div style="text-align: right;">
-                                <?php echo number_format($dt['total_harga'], 0, ',', '.'); ?>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="opsi-column text-center align-middle">
-                        <?php
-                        $target = "#detil-" . str_replace(' ', '_', $dt['tahun']) . '-' . str_replace(' ', '_', $dt['bulan']) . '-' . str_replace(' ', '_', $dt['perusahaan']);
-                        ?>
-                        <button class="btn btn-info btn-icon" data-toggle="modal" data-target="<?php echo $target; ?>">Detail</button>
-                    </td>
+                    <th class="text-left">NO</th>
+                    <th class="text-left">Tahun</th>
+                    <th class="text-left">Bulan</th>
+                    <th class="text-left">Perusahaan</th>
+                    <th class="text-left">Jam Kerja</th>
+                    <th class="text-center" style="width: 13%;">Total Biaya Sewa</th>
+                    <th class="text-center opsi-column">Opsi</th>
                 </tr>
-            <?php endforeach ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php
+                $no = 1;
+                foreach ($sewa as $dt) : ?>
+                    <tr>
+                        <td class="opsi-column"><?php echo $no++; ?></td>
+                        <td><?php echo $dt['tahun']; ?></td>
+                        <td><?php echo $dt['bulan']; ?></td>
+                        <td><?php echo $dt['perusahaan']; ?></td>
+                        <td><?php echo $dt['total_jam_kerja']; ?> Jam</td>
+                        <td>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-right : 30px;">
+                                <div style="text-align: right;">
+                                    Rp
+                                </div>
+                                <div style="text-align: right;">
+                                    <?php echo number_format($dt['total_harga'], 0, ',', '.'); ?>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="opsi-column text-center align-middle">
+                            <?php
+                            $target = "#detil-" . str_replace(' ', '_', $dt['tahun']) . '-' . str_replace(' ', '_', $dt['bulan']) . '-' . str_replace(' ', '_', $dt['perusahaan']);
+                            ?>
+                            <button class="btn btn-info btn-icon" data-toggle="modal" data-target="<?php echo $target; ?>">Detail</button>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
 
     <?php
     $no = 1;

@@ -242,7 +242,7 @@
                 title: 'Oops...',
                 text: 'Username sudah terdaptar dalam sistem ganti dengan username lain!!!',
             });
-            document.getElementById("nama_unit").value = "";
+            document.getElementById("username").value = "";
         }
 
     }

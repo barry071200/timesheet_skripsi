@@ -11,6 +11,44 @@
 <script src="<?= base_url('assets/path_to_sweetalert/sweetalert2.min.js') ?>"></script>
 <div class="card-body">
     <div class="icon-container">
+        <?php
+        if (!empty($this->session->flashdata('admin_save_success'))) {
+            echo '
+    <script>
+        Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "' . $this->session->flashdata('admin_save_success') . '",
+            showConfirmButton: false,
+            timer: 3000
+        });
+    </script>';
+        }
+        ?>
+
+        <?php
+        if (!empty($this->session->flashdata('admin_hapus_success'))) {
+            echo '
+    <script>
+        Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "' . $this->session->flashdata('admin_hapus_success') . '",
+            showConfirmButton: false,
+            timer: 3000
+        });
+    </script>';
+        }
+        ?>
+
+        <script>
+            window.addEventListener('DOMContentLoaded', function() {
+                fetch('<?php echo base_url('timesheet/clear_flash_data'); ?>', {
+                    method: 'POST'
+                });
+            });
+        </script>
+
         <script>
             function printData() {
                 var table = document.getElementById('example1');
@@ -76,6 +114,7 @@
                 <th>JAM KERJA</th>
                 <th>KETERANGAN</th>
                 <th>KONFIRMASI</th>
+                <th class="action-column text-center">ACTION</th>
             </tr>
         </thead>
         <tbody>
@@ -105,11 +144,92 @@
                             </span>
                         <?php endif; ?>
                     </td>
+                    <td class="action-column">
+                        <a class="btn btn-warning" data-toggle="modal" data-target="#ubahtimesheet<?php echo $dt['id_timesheet']; ?>">Edit</a>
+                        <a class="btn btn-danger btn-delete" href="<?php echo site_url("arsip/delete") . "/" . $dt['id_timesheet']; ?>">Hapus<span class="glyphicon glyphicon-remove"></span></a>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </tbody>
     </table>
 </div>
+
+<?php
+$no = 0;
+foreach ($timesheet as $dt) :
+    $no++;
+?>
+    <div class="modal fade" id="ubahtimesheet<?php echo $dt['id_timesheet']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Data Timesheet</h5>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="<?php echo site_url("arsip/edit"); ?>">
+                        <div class="form-group">
+                            <label for="id_timesheet">ID Timesheet</label>
+                            <input type="text" class="form-control" id="id_timesheet" name="id_timesheet" value="<?php echo $dt['id_timesheet']; ?>" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_unit">Nama Unit</label>
+                            <select class="form-control" name="id_unit" id="id_unit">
+                                <?php foreach ($unit as $un) : ?>
+                                    <option value="<?php echo $un->id_unit ?>" <?php echo ($un->id_unit == $dt['id_unit']) ? 'selected' : '' ?>><?php echo $un->nama_unit ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_karyawan">Nama Karyawan</label>
+                            <select class="form-control" name="id_karyawan" id="id_karyawan">
+                                <?php foreach ($karyawan as $kar) : ?>
+                                    <option value="<?php echo $kar->id_karyawan ?>" <?php echo ($kar->id_karyawan == $dt['id_karyawan']) ? 'selected' : '' ?>><?php echo $kar->nama_karyawan ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggal">Tanggal</label>
+                            <input type="date" required class="form-control" id="tanggal_<?php echo $dt['id_timesheet']; ?>" name="tanggal" value="<?php echo $dt['tanggal']; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="hm_awal">HM AWAL</label>
+                            <input type="number" required class="form-control" step="0.01" id="hm_awal_<?php echo $dt['id_timesheet']; ?>" name="hm_awal" value="<?php echo $dt['hm_awal']; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="hm_akhir">HM AKHIR</label>
+                            <input type="number" required class="form-control" step="0.01" id="hm_akhir_<?php echo $dt['id_timesheet']; ?>" name="hm_akhir" value="<?php echo $dt['hm_akhir']; ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan</label>
+                            <input type="text" required class="form-control" id="keterangan_<?php echo $dt['id_timesheet']; ?>" name="keterangan" value="<?php echo $dt['keterangan']; ?>">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelector('#ubahtimesheet<?php echo $dt['id_timesheet']; ?> form').addEventListener('submit', function(event) {
+            var hmAwalInput = document.getElementById('hm_awal_<?php echo $dt['id_timesheet']; ?>');
+            var hmAkhirInput = document.getElementById('hm_akhir_<?php echo $dt['id_timesheet']; ?>');
+            var hmAwal = parseInt(hmAwalInput.value);
+            var hmAkhir = parseInt(hmAkhirInput.value);
+            if (hmAkhir < hmAwal) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'HM Awal tidak boleh lebih besar dari HM Akhir!!!',
+                });
+            }
+        });
+    </script>
+
+<?php endforeach ?>
 <script>
     var table = $('#example1').DataTable({
         "pageLength": 31
@@ -151,5 +271,42 @@
         });
         table.buttons().container()
             .appendTo($('.col-sm-6:eq(0)', table.table().container()));
+    });
+</script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+        var deleteButtons = document.querySelectorAll('.btn-delete');
+        deleteButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                Swal.fire({
+                    title: "Konfirmasi",
+                    text: "Apakah Anda yakin ingin menghapus?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Hapus",
+                    cancelButtonText: "Batal"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = button.getAttribute('href');
+                    }
+                });
+            });
+        });
+    });
+</script>
+<script>
+    var tanggalInput = document.getElementById('tanggal');
+    var currentDate = new Date();
+    var year = currentDate.getFullYear();
+    var month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    var day = String(currentDate.getDate()).padStart(2, '0');
+    var maxDate = year + '-' + month + '-' + day;
+    tanggalInput.setAttribute('max', maxDate);
+    var tanggalInputs = document.querySelectorAll('input[id^="tanggal_"]');
+    tanggalInputs.forEach(function(input) {
+        input.setAttribute('max', maxDate);
     });
 </script>

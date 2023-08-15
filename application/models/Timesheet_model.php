@@ -28,14 +28,38 @@ class Timesheet_model extends CI_Model
   {
     $endDate = date('Y-m-d');
     $startDate = date('Y-m-d', strtotime('-360 days'));
+
     $this->db->select('*');
     $this->db->from('timesheet');
     $this->db->join('karyawan', 'timesheet.id_karyawan = karyawan.id_karyawan', 'left');
     $this->db->join('unit', 'unit.id_unit = timesheet.id_unit', 'left');
     $this->db->where("tanggal BETWEEN '{$startDate}' AND '{$endDate}'");
+    $this->db->group_start();
+    $this->db->where('karyawan.id_karyawan IS NOT NULL');
+    $this->db->or_where('unit.id_unit IS NOT NULL');
+    $this->db->group_end();
+
     $this->db->order_by('tanggal', 'desc');
+
     return $this->db->get();
   }
+
+  public function arsip()
+  {
+    $this->db->select('*');
+    $this->db->from('timesheet');
+    $this->db->join('karyawan', 'timesheet.id_karyawan = karyawan.id_karyawan', 'left');
+    $this->db->join('unit', 'unit.id_unit = timesheet.id_unit', 'left');
+    $this->db->group_start();
+    $this->db->where('karyawan.id_karyawan IS NOT NULL');
+    $this->db->or_where('unit.id_unit IS NOT NULL');
+    $this->db->group_end();
+    $this->db->order_by('tanggal', 'desc');
+    $query = $this->db->get();
+    return $query;
+  }
+
+
   public function ditolak()
   {
     $endDate = date('Y-m-d');

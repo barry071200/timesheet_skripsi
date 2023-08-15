@@ -69,13 +69,11 @@
                 for (var i = 0; i < actionColumn.length; i++) {
                     actionColumn[i].style.display = "none";
                 }
-
-                // Add a "No" column to the table
                 var rows = table.rows;
-                for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the header row
+                for (var i = 1; i < rows.length; i++) {
                     var row = rows[i];
                     var noCell = document.createElement('td');
-                    noCell.textContent = i; // Number starts from 1
+                    noCell.textContent = i;
                     row.insertBefore(noCell, row.firstElementChild);
                 }
 
@@ -105,13 +103,11 @@
             }
         </script>
 
-
         <div style="display: flex; align-items: center;">
             <form>
                 <th colspan="4"><a class="btn btn-primary" style="margin-right: 10px;" data-toggle="modal" data-target="#tambahtimesheet" href="<?php echo site_url('timesheet/tambah') ?>"><i class="fa fa-plus"></i> Tambah</a></th>
             </form>
             <br>
-
             <button type="button" onclick="printData()" style="margin-right: 10px;" class="btn btn-success">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
                     <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z" />
@@ -167,16 +163,18 @@
                             </span>
                         <?php endif; ?>
                     </td>
-
-
                     <td class="action-column">
-                        <a class="btn btn-warning" data-toggle="modal" data-target="#ubahtimesheet<?php echo $dt['id_timesheet']; ?>">Edit</a>
-                        <a class="btn btn-danger btn-delete" href="<?php echo site_url("timesheet/delete") . "/" . $dt['id_timesheet']; ?>">Hapus<span class="glyphicon glyphicon-remove"></span></a>
+                        <?php if ($dt['konfirmasi'] !== 'DITERIMA') : ?>
+                            <a class="btn btn-warning" data-toggle="modal" data-target="#ubahtimesheet<?php echo $dt['id_timesheet']; ?>">Edit</a>
+                            <a class="btn btn-danger btn-delete" href="<?php echo site_url("timesheet/delete") . "/" . $dt['id_timesheet']; ?>">Hapus<span class="glyphicon glyphicon-remove"></span></a>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach ?>
         </tbody>
     </table>
+
+
 
 
     <!-- sweet alert -->

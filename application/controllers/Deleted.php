@@ -30,7 +30,7 @@ class Deleted extends CI_Controller
     {
         if ($this->session->userdata('role') == '1') {
             $data['deleted_karyawan'] = $this->Deleted_model->get_deleted_karyawan();
-            $data['judul'] = "Data Karyawan";
+            $data['judul'] = "Data Karyawan Deleted";
             $data['layout'] = "deleted/karyawan";
             $this->load->view('template', $data);
         } else {
@@ -49,7 +49,7 @@ class Deleted extends CI_Controller
     {
         if ($this->session->userdata('role') == '1') {
             $data['deleted_unit'] = $this->Deleted_model->get_deleted_unit();
-            $data['judul'] = "Data Unit";
+            $data['judul'] = "Data Unit Deleted";
             $data['layout'] = "deleted/unit";
             $this->load->view('template', $data);
         } else {

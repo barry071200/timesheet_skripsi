@@ -52,9 +52,7 @@
 
 
     <script>
-        // Saat halaman dimuat
         window.addEventListener('DOMContentLoaded', function() {
-            // Menghapus flash data dengan AJAX
             fetch('<?php echo base_url('timesheet/clear_flash_data'); ?>', {
                 method: 'POST'
             });
@@ -221,19 +219,12 @@
 
     }
 </script>
-<!-- sweet alert -->
 <script>
-    // Saat halaman dimuat
     window.addEventListener('DOMContentLoaded', function() {
-        // Dapatkan tombol hapus
         var deleteButtons = document.querySelectorAll('.btn-delete');
-
-        // Tambahkan event listener pada setiap tombol hapus
         deleteButtons.forEach(function(button) {
             button.addEventListener('click', function(event) {
-                event.preventDefault(); // Menghentikan aksi default dari tombol hapus
-
-                // Tampilkan konfirmasi Sweet Alert
+                event.preventDefault();
                 Swal.fire({
                     title: "Konfirmasi",
                     text: "Apakah Anda yakin ingin menghapus?",
@@ -244,7 +235,6 @@
                     cancelButtonText: "Batal"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Arahkan ke aksi penghapusan
                         window.location.href = button.getAttribute('href');
                     }
                 });
@@ -252,7 +242,7 @@
         });
     });
 </script>
-<!-- sweet alert -->
+
 <script>
     function printData() {
         var table = document.getElementById('example1');
@@ -265,10 +255,10 @@
             actionColumn[i].style.display = "none";
         }
         var rows = table.rows;
-        for (var i = 1; i < rows.length; i++) { // Start from index 1 to skip the header row
+        for (var i = 1; i < rows.length; i++) {
             var row = rows[i];
             var noCell = document.createElement('td');
-            noCell.textContent = i; // Number starts from 1
+            noCell.textContent = i;
             row.insertBefore(noCell, row.firstElementChild);
         }
         var jumlahKaryawan = table.rows.length - 1;

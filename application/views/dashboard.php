@@ -425,7 +425,7 @@
 								<p>Jumlah Users</p>
 							</div>
 							<div class="icon">
-								<i class="bi bi-people-fill"></i>
+								<i class='bx bx-user-pin'></i>
 							</div>
 							<a href="<?php echo site_url('pengguna') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
 						</div>
@@ -437,7 +437,7 @@
 								<p>Timesheet Deleted</p>
 							</div>
 							<div class="icon">
-								<i class="bi bi-people-fill"></i>
+								<i class="fa fa-edit"></i>
 							</div>
 							<a href="<?php echo site_url('deleted/timesheet') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
 						</div>
@@ -461,7 +461,7 @@
 								<p>Unit Deleted</p>
 							</div>
 							<div class="icon">
-								<i class="bi bi-people-fill"></i>
+								<i class="bi bi-list-task"></i>
 							</div>
 							<a href="<?php echo site_url('deleted/unit') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
 						</div>
